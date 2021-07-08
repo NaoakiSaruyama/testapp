@@ -1,6 +1,5 @@
 <head>
-  <link rel="stylesheet" href="./../../content/static/SCSS/bargraphone.css">
-  <link rel="stylesheet" href="./../../content/static/js/bargraphone.js">
+  <link rel="stylesheet" type="text/scss" href="./../../content/static/SCSS/bargraphone.css">
 </head>
 
 <style>
@@ -11,8 +10,10 @@
   }
 
   .button-addstudylog-location{
-    position:absolute;
+    position: absolute;
     top: 16px;
+    left: 0px;
+    width: 100vw;
     text-align: left;
     padding-right: 16px;
   }
@@ -23,13 +24,25 @@
     left: 284px;
   }
 
+  .calender-location{
+    position: absolute;
+    top: 105px;
+    text-align: right;
+    padding-left: 16px;
+  }
+
 /*配置終わり*/
 
 /*学習ログデザイン　初め*/
 
   .button-addstudylog {
-    display: inline-block;
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    width: 150px;
+    height: 30px;
     padding: 7px 20px;
+    text-align: center;
     border-radius: 25px;
     text-decoration: none;
     color: #FFF;
@@ -59,6 +72,13 @@
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
+/*カレンダー　初め*/
+.calender-form{
+  height: 240px;
+  width: 240px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  background-color: red;
+}
 
 
 </style>
@@ -108,5 +128,9 @@
   <!--棒グラフ1　おわり-->
 
   <div class="bargraph-two-location"></div>
-  <div class="calender-location"></div>
+  <div class="calender-location">
+    <div class="calender-form"></div>
+  </div>
   <div class="ranking-table-location"></div>
+
+  <script src="./../../content/static/js/bargraphone.js"></script>

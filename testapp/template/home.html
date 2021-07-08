@@ -1,0 +1,112 @@
+<head>
+  <link rel="stylesheet" href="./../../content/static/SCSS/bargraphone.css">
+  <link rel="stylesheet" href="./../../content/static/js/bargraphone.js">
+</head>
+
+<style>
+  .studylog-name{
+    position:absolute;
+    top: 16px;
+    left: 284px;
+  }
+
+  .button-addstudylog-location{
+    position:absolute;
+    top: 16px;
+    text-align: left;
+    padding-right: 16px;
+  }
+
+  .bargraph-one-location{
+    position: absolute;
+    top: 105px;
+    left: 284px;
+  }
+
+/*配置終わり*/
+
+/*学習ログデザイン　初め*/
+
+  .button-addstudylog {
+    display: inline-block;
+    padding: 7px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    color: #FFF;
+    background-color: #FD7E14;
+  }
+
+  .studylog-name {
+    display: inline-block;
+    font-size: 16px;
+    height: 57px;
+    text-align: center;
+    font: normal normal normal 40px/53px Segoe UI;
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 1;
+  }
+
+  .studylog-name span{
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+/*棒グラフ1 初め*/
+.bargraph-one-style{
+  width: 560px;
+  height: 240px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+
+
+</style>
+  <!--学習ログタイトル，ボタン-->
+  <div class="studylogs-location">
+    <div class="studylog-name"><span>学習ログ</span></div>
+    <div class="button-addstudylog-location">
+      <a href="#" class="button-addstudylog">学習ログ追加＋</a>
+    </div>
+  </div>
+  <!--学習ログタイトル，ボタン　おわり-->
+
+  <!--棒グラフ1-->
+  <div class="bargraph-one-location">
+    <div class="bargraph-one-style">
+      <div class="main-wrapper">
+        <div class="wrapper">
+          <div class="cards">
+            <div class="listen-wrap">
+              <ul>
+                <li>
+                  <span class="count">176</span>
+                  <span>Total <br> Broadcast Call</span>
+                </li>
+                <li>
+                  <span class="count">126</span>
+                  <span>Total <br>Successful Call</span>
+                </li>
+                <li>
+                  <span class="count">50</span>
+                  <span>Total <br>Unsuccessful Call</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="chart-wrapper" id="chart-bar">
+            <h1>Status</h1>
+            <ul class="vbroadcast-legend">
+              <li class="successful">Successful</li>
+              <li class="unsuccessful">Unsuccessful</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--棒グラフ1　おわり-->
+
+  <div class="bargraph-two-location"></div>
+  <div class="calender-location"></div>
+  <div class="ranking-table-location"></div>

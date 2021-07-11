@@ -1,15 +1,19 @@
 <head>
-  <link rel="stylesheet" type="text/css"
-    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="./../../content/static/css/base.css">
-  <link rel="stylesheet" href="./../../content/static/css/registe.css">
-  <link rel="stylesheet" href="./../../content/static/css/rank.css">
+  <link rel="stylesheet" href="./../../content/static/css/registe-site.css">
 </head>
 
 <style>
-  .home-name{
+
+  .register-name{
     position:absolute;
     left: 284px;
+  }
+
+  .button-addstudylog-location{
+    position: absolute;
+    right: 16px;
+    width: 100vw;
   }
 
   .registe-site-location{
@@ -18,17 +22,10 @@
     left: 284px;
   }
 
-  .ranking-table-location{
-    position:absolute;
-    top:89px;
-    right: 0px;
-    padding-right: 16px;
-  }
+  /*配置終わり*/
 
-/*配置終わり*/
-
-/*ホームデザイン　初め*/
-  .home-name {
+  /*デザイン*/
+  .register-name {
     display: inline-block;
     font-size: 16px;
     height: 57px;
@@ -39,27 +36,35 @@
     opacity: 1;
   }
 
-  .home-name span{
+  .register-name span{
     font-size: 28px;
     font-weight: 600;
   }
 
-/*登録サイト 初め*/
-.registe-site-style{
+  .button-addstudylog {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    width: 160px;
+    height: 32px;
+    padding: 7px 20px;
+    font-size: 12;
+    text-align: center;
+    border-radius: 25px;
+    text-decoration: none;
+    color: #FFF;
+    background-color: #ff96a3;
+  }
+
+  /*登録サイト 初め*/
+  .registe-site-style{
   width: 700px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 
-/*ランキング表初め*/
-.ranking-table-External-shape{
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  width: 240px;
-  background-color: #FFF;
-}
-
 </style>
-</head>
+
 <body>
   <!--base.html-->
   <header class="header" role="banner">
@@ -69,8 +74,10 @@
     <div class="nav-wrap">
       <nav class="main-nav" role="navigation">
         <ul class="unstyled list-hover-slide">
-          <li><a href="./home.html">ホーム</a></li>
+          <li><a href="./home-after-login.html">ホーム</a></li>
           <li><a href="./sign-in.html">ログイン・会員登録</a></li>
+          <li><a href="./RegistSite.html">登録サイト</a></li>
+          <li><a href="#">設定</a></li>
         </ul>
       </nav>
       <ul class="social-links list-inline unstyled list-hover-slide">
@@ -80,11 +87,13 @@
     </div>
   </header>
   <!--end base.html-->
-  <!--タイトル-->
-  <div class="home-name"><span>ユーザーの登録サイト</span></div>
-  <!--タイトル終わり-->
-
-  <!--登録サイト-->
+  <!--学習ログタイトル，ボタン-->
+  <div class="register-name"><span>ユーザーの登録サイト</span></div>
+  <div class="button-addstudylog-location">
+    <a href="#" class="button-addstudylog">サイト登録＋</a>
+  </div>
+  <!--学習ログタイトル，ボタン　おわり-->
+  <!--ユーザーの要録サイト-->
   <div class="registe-site-location">
     <div class="registe-site-style">
       <table id="registe-site-table">
@@ -117,35 +126,6 @@
           <td>data 2-4</td>
           <td>data 3-4</td>
           <td>5</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <!--登録サイト　おわり-->
-
-  <!--ランキング表開始-->
-  <div class="ranking-table-location">
-    <div class="ranking-table-External-shape">
-      <table>
-        <tr>
-          <th>Rank</th>
-          <th>ユーザー名</th>
-          <th>学習時間</th>
-        </tr>
-        <tr>
-          <td class="icon bird">1</td>
-          <td>samurai1</td>
-          <td>8h</td>
-        </tr>
-        <tr>
-          <td class="icon whale">2</td>
-          <td>samurai2</td>
-          <td>7h</td>
-        </tr>
-        <tr>
-          <td class="icon crab">3</td>
-          <td>samurai2</td>
-          <td>6h</td>
         </tr>
       </table>
     </div>

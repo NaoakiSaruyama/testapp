@@ -1,10 +1,18 @@
+{% load staticfiles %}
+
 <head>
-  <link rel="stylesheet" href="./../../content/static/css/sigin-in.css">
+  <link rel="stylesheet" href="./../static/css/sigin-in.css">
 </head>
 <body>
   <div class="form-wrapper">
     <h1>Sign In</h1>
-    <form>
+    <form method="POST">
+      {% csrf_token%}
+      {% for field in forms %}
+      <div class="form-item">
+        {% field %}
+      </div>
+      {% endform%}
       <div class="form-item">
         <label for="username"></label>
         <input name="username" required="required" placeholder="ユーザー名"></input>
@@ -20,7 +28,7 @@
       </div>
     </form>
     <div class="form-footer">
-      <p><a href="./regist.html">アカウント作成</a></p>
+      <p><a href="./RegistUser.html">アカウント作成</a></p>
       <p><a href="./ForgetPassword.html">パスワードを忘れましたか？</a></p>
     </div>
   </div>

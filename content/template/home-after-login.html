@@ -2,7 +2,7 @@
   <link rel="stylesheet" type="text/css"
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="./../../content/static/css/base.css">
-  <link rel="stylesheet" type="text/scss" href="./../../content/static/SCSS/bargraphone.css">
+  <link rel="stylesheet" href="./../../content/static/css/bargraph.css">
   <link rel="stylesheet" href="./../../content/static/css/rank.css">
 <style>
   .studylog-name{
@@ -89,7 +89,6 @@
   width: 700px;
   height: 240px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  background-color: rgb(255, 0, 0);
 }
 
 /*カレンダー　初め*/
@@ -97,7 +96,6 @@
   height: 240px;
   width: 240px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  background-color: red;
 }
 
 /*ランキング表初め*/
@@ -150,21 +148,21 @@
               <ul>
                 <li>
                   <span class="count">176</span>
-                  <span>Total <br> Broadcast Call</span>
-                </li>
-                <li>
-                  <span class="count">126</span>
-                  <span>Total <br>Successful Call</span>
+                  <span>total</span>
                 </li>
                 <li>
                   <span class="count">50</span>
-                  <span>Total <br>Unsuccessful Call</span>
+                  <span>week</span>
+                </li>
+                <li>
+                  <span class="count">176</span>
+                  <span>today</span>
                 </li>
               </ul>
             </div>
           </div>
           <div class="chart-wrapper" id="chart-bar">
-            <h1>Status</h1>
+            <h1 class="bargraph-detail">Status</h1>
             <ul class="vbroadcast-legend">
               <li class="successful">Successful</li>
               <li class="unsuccessful">Unsuccessful</li>
@@ -206,7 +204,7 @@
     <div class="ranking-table-External-shape">
       <table>
         <tr>
-          <th>Rank</th>
+          <th>ランキング</th>
           <th>ユーザー名</th>
           <th>学習時間</th>
         </tr>
@@ -229,5 +227,7 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script src="./../../content/static/js/bargraphone.js"></script>
 </body>

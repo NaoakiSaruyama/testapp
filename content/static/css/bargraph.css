@@ -1,21 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Overpass');
-
-//colors
-$white: #fff;
-$light-grey: #eee;
-$grey: #adadad;
-$light-black: #4a4a4a;
-
-* {
+@import url("https://fonts.googleapis.com/css?family=Overpass");
+.bargraph-one-style {
   box-sizing: border-box;
   font: normal 14px/1.5 "Overpass", sans-serif;
 }
 
-body {
-  background: #76daff;
-}
 
-h1 {
+.bargraph-detail {
   color: #fff;
   font-size: 18px;
   float: left;
@@ -31,13 +21,13 @@ h1 {
 }
 
 .wrapper {
-  box-shadow: 0 0 40px rgba(51,59,102,0.5);
+  box-shadow: 0 0 40px rgba(51, 59, 102, 0.5);
   display: none;
   width: 870px;
 }
 
 .cards {
-  background: $white;
+  background: #fff;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   padding: 30px 40px;
@@ -45,36 +35,36 @@ h1 {
 
 .listen-wrap {
   overflow: hidden;
-  ul {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    li {
-      border-right: 1px solid $light-grey;
-      color: darken($grey, 12%);
-      display: inline-block;
-      list-style: none;
-      padding: 0 30px;
-      text-align: left;
-      text-transform: uppercase;
-      &:first-child {
-        padding-left: 0;
-      }
-      &:last-child {
-        border-right: 0;
-        padding-right: 0;
-      }
-      span {
-        display: inline-block;
-        line-height: 18px;
-        vertical-align: middle;
-      }
-    }
-  }
+}
+.listen-wrap ul {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.listen-wrap ul li {
+  border-right: 1px solid #eee;
+  color: #8e8e8e;
+  display: inline-block;
+  list-style: none;
+  padding: 0 30px;
+  text-align: left;
+  text-transform: uppercase;
+}
+.listen-wrap ul li:first-child {
+  padding-left: 0;
+}
+.listen-wrap ul li:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+.listen-wrap ul li span {
+  display: inline-block;
+  line-height: 18px;
+  vertical-align: middle;
 }
 
 .count {
-  color: $light-black;
+  color: #4a4a4a;
   font-size: 48px;
   font-weight: 700;
   letter-spacing: -4px;
@@ -95,7 +85,6 @@ text {
   fill: #A7B2EB;
 }
 
-
 .axis path,
 .axis line,
 .gridline line {
@@ -106,7 +95,7 @@ text {
 }
 
 .line {
-  stroke: #17EAD9;
+  stroke: #7184F5;
   stroke-width: 3px;
   fill: none;
 }
@@ -135,27 +124,27 @@ div.tooltip {
   float: right;
   margin-right: 40px;
   margin-top: 16px;
-  li {
-    color: #fff;
-    font-size: 13px;
-    float: left;
-    list-style: none;
-    margin-left: 20px;
-    padding-left: 18px;
-    position: relative;
-    &:before {
-      content: "";
-      height: 12px;
-      left: 0;
-      position: absolute;
-      top: 3px;
-      width: 12px;
-    }
-    &.successful:before {
-      background: #50e3c2;
-    }
-    &.unsuccessful:before {
-      background: #ef5c6e;
-    }
-  }
+}
+.vbroadcast-legend li {
+  color: #fff;
+  font-size: 13px;
+  float: left;
+  list-style: none;
+  margin-left: 20px;
+  padding-left: 18px;
+  position: relative;
+}
+.vbroadcast-legend li:before {
+  content: "";
+  height: 12px;
+  left: 0;
+  position: absolute;
+  top: 3px;
+  width: 12px;
+}
+.vbroadcast-legend li.successful:before {
+  background: #50e3c2;
+}
+.vbroadcast-legend li.unsuccessful:before {
+  background: #ef5c6e;
 }

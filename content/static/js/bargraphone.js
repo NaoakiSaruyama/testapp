@@ -258,7 +258,7 @@ function drawBarGraph(data) {
     return d;
   }  
   
-   var tooltip = d3.select("#chart-bar").append("div")
+  var tooltip = d3.select("#chart-bar").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
 

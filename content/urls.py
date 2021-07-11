@@ -4,6 +4,6 @@ from django.urls.resolvers import URLPattern
 
 app_name='studyapp'
 
-URLPattern=[
-  path('login/',Login.as_view,name='login'),
+urlpatterns=[
+  path('login/',Login.as_view(),name='login'),
 ]

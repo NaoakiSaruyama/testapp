@@ -16,12 +16,11 @@
 .main-wrapper {
   align-items: center;
   display: flex;
-  height: 100vh;
   justify-content: center;
 }
 
 .wrapper {
-  box-shadow: 0 0 40px rgba(51, 59, 102, 0.5);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   display: none;
   width: 870px;
 }
@@ -73,7 +72,7 @@
 }
 
 .chart-wrapper {
-  background: #333B66;
+  background: #2884B0;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   clear: both;
@@ -142,9 +141,6 @@ div.tooltip {
   top: 3px;
   width: 12px;
 }
-.vbroadcast-legend li.successful:before {
+.vbroadcast-legend li.total:before {
   background: #50e3c2;
-}
-.vbroadcast-legend li.unsuccessful:before {
-  background: #ef5c6e;
 }

@@ -2,167 +2,135 @@ $(".wrapper").delay(600).fadeIn(500);
 var barDataset = [
   {
     "date": 1,
-    "successful": 1,
-    "unsuccessful": 2
+    "total": 1,
   },
   {
     "date": 2,
-    "successful": 41,
-    "unsuccessful": 8
+    "total": 41,
   },
   {
     "date": 3,
-    "successful": 44,
-    "unsuccessful": 4
+    "total": 21,
   },
   {
     "date": 4,
-    "successful": 2,
-    "unsuccessful": 5
+    "total": 41,
   },
   {
     "date": 5,
-    "successful": 21,
-    "unsuccessful": 1
+    "total": 31,
   },
   {
     "date": 6,
-    "successful": 14,
-    "unsuccessful": 6
+    "total": 41,
   },
   {
     "date": 7,
-    "successful": 42,
-    "unsuccessful": 1
+    "total": 41,
   },
   {
     "date": 8,
-    "successful": 10,
-    "unsuccessful": 1
+    "total": 41,
   },
   {
     "date": 9,
-    "successful": 24,
-    "unsuccessful": 10
+    "total": 41,
   },
   {
     "date": 10,
-    "successful": 23,
-    "unsuccessful": 6
+    "total": 81,
   },
   {
     "date": 11,
-    "successful": 21,
-    "unsuccessful": 15
+    "total": 41,
   },
   {
     "date": 12,
-    "successful": 28,
-    "unsuccessful": 15
+    "total": 41,
   },
   {
     "date": 13,
-    "successful": 40,
-    "unsuccessful": 5
+    "total": 41,
   },
   {
     "date": 14,
-    "successful": 6,
-    "unsuccessful": 12
+    "total": 41,
   },
   {
     "date": 15,
-    "successful": 3,
-    "unsuccessful": 3
+    "total": 41,
   },
   {
     "date": 16,
-    "successful": 6,
-    "unsuccessful": 14
+    "total": 41,
   },
   {
     "date": 17,
-    "successful": 21,
-    "unsuccessful": 2
+    "total": 41,
   },
   {
     "date": 18,
-    "successful": 5,
-    "unsuccessful": 1
+    "total": 41,
   },
   {
     "date": 19,
-    "successful": 21,
-    "unsuccessful": 15
+    "total": 41,
   },
   {
     "date": 20,
-    "successful": 36,
-    "unsuccessful": 14
+    "total": 41,
   },
   {
     "date": 21,
-    "successful": 48,
-    "unsuccessful": 12
+    "total": 41,
   },
   {
     "date": 22,
-    "successful": 26,
-    "unsuccessful": 10
+    "total": 41,
   },
   {
     "date": 23,
-    "successful": 29,
-    "unsuccessful": 15
+    "total": 41,
   },
   {
     "date": 24,
-    "successful": 38,
-    "unsuccessful": 14
+    "total": 41,
   },
   {
     "date": 25,
-    "successful": 11,
-    "unsuccessful": 2
+    "total": 41,
   },
   {
     "date": 26,
-    "successful": 4,
-    "unsuccessful": 11
+    "total": 41,
   },
   {
     "date": 27,
-    "successful": 18,
-    "unsuccessful": 5
+    "total": 41,
   },
   {
     "date": 28,
-    "successful": 40,
-    "unsuccessful": 1
+    "total": 41,
   },
   {
     "date": 29,
-    "successful": 19,
-    "unsuccessful": 7
+    "total": 41,
   },
   {
     "date": 30,
-    "successful": 25,
-    "unsuccessful": 7
+    "total": 41,
   },
   {
     "date": 31,
-    "successful": 15,
-    "unsuccessful": 17
+    "total": 41,
   }
 ]
 
 function drawBarGraph(data) {
 
-  var status = ["successful", "unsuccessful"];
+  var status = ["total"];
 
-  var colors = [ ["Successful", "#50E3C2"],
-                ["Unsuccessful", "#EF5C6E"] ];
+  var colors = ["total", "#50E3C2"];
 
   var margin = {top: 30, right: 30, bottom: 40, left: 60},
       width  = 860 - margin.left - margin.right,
@@ -256,8 +224,8 @@ function drawBarGraph(data) {
       d[c] = +d[c];
     });
     return d;
-  }  
-  
+  }
+
   var tooltip = d3.select("#chart-bar").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);

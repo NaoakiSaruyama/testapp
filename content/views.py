@@ -6,4 +6,4 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 class Login(LoginView):
   form_class = LoginForm
-  template_name="studyapp/SignIn.html"
+  template_name="testapp/content/template/content/SignIn.html"

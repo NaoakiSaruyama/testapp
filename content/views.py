@@ -7,3 +7,6 @@ from django.contrib.auth.views import LoginView, LogoutView
 class Login(LoginView):
   form_class = LoginForm
   template_name="content/SignIn.html"
+
+def home():
+  template_name="content/home-after-login.html"

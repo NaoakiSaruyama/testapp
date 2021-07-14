@@ -7,3 +7,5 @@ class LoginForm(AuthenticationForm):
       for field in self.fields.values():
         field.widget.attrs['placeholder']=field.label
 ######ログイン終わり#######
+
+######ユーザー登録#######

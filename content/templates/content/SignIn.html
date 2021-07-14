@@ -14,13 +14,13 @@
       </div>
       {% endfor %}
       <div class="button-panel">
-        <a href="{% url studyapp:home %}">
+        <a href="{% url 'studyapp:home' %}">
           <input type="submit" class="button" title="Sign In" value="Sign In"></input>
         </a>
       </div>
     </form>
     <div class="form-footer">
-      <p><a href="./RegistUser.html">アカウント作成</a></p>
+      <p><a href="{% url 'studyapp:createaccount' %}">アカウント作成</a></p>
       <p><a href="./ForgetPassword.html">パスワードを忘れましたか？</a></p>
     </div>
   </div>

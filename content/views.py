@@ -12,7 +12,7 @@ class Login(LoginView):
   template_name="content/SignIn.html"
 ######ログイン終わり#########
 
-#######ホーム(ログイン後)#########
+#######ホーム(ログイン後/リンク)#########
 def home(request):
   template_name="content/home-after-login.html"
   return render(request,template_name)
@@ -38,3 +38,8 @@ def create_user(request):
     return render(request, 'content/RegistUser.html')
 #######アカウント作成終了########
 
+#######パスワード再設定(リンク)#########
+def password(request):
+  template_name="content/ForgetPassword.html"
+  return render(request,template_name)
+#######パスワード再設定終了############

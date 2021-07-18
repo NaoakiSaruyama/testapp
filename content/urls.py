@@ -9,5 +9,6 @@ app_name='studyapp'
 urlpatterns=[
   path('home/',views.home,name='home'),
   path('login/',Login.as_view(),name='login'),
+  path('password',views.password,name='password'),
   path('createaccount/',views.createaccount,name='createaccount'),
 ]

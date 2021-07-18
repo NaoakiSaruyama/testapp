@@ -1,4 +1,5 @@
 from django.http import request
+from django.views.generic.base import TemplateResponseMixin
 from content.forms import LoginForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
@@ -19,13 +20,13 @@ def home(request):
 #######ホーム(ログイン後)終わり#######
 
 ######アカウント作成(リンク)#########
-def createaccount(request):
+def create_user(request):
   template_name="content/RegistUser.html"
   return render(request,template_name)
 
 
 #####アカウント作成##########
-def create_user(request):
+def createaccount(request):
   if request.method=='POST':
     object=User.objects.create(
       email=request.POST["Email"],

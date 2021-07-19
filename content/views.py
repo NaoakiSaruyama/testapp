@@ -1,8 +1,7 @@
 from django.http import request
-from django.views.generic.base import TemplateResponseMixin
 from content.forms import LoginForm
 from django.shortcuts import redirect, render
-from django.contrib.auth.models import User
+from .models import User
 
 # Create your views here.
 from django.contrib.auth.views import LoginView, LogoutView
@@ -19,19 +18,13 @@ def home(request):
   return render(request,template_name)
 #######ホーム(ログイン後)終わり#######
 
-######アカウント作成(リンク)#########
-def create_user(request):
-  template_name="content/RegistUser.html"
-  return render(request,template_name)
-
-
 #####アカウント作成##########
-def createaccount(request):
-  if request.method=='POST':
-    object=User.objects.create(
-      email=request.POST["Email"],
-      name=request.POST["username"],
-      password=request.POST["password"],
+def create_user(request):
+  if request.method == 'POST':
+    object = User.objects.create(
+      key = request.POST['email'],
+      name = request.POST['username'],
+      password = request.POST['password'],
     )
     object.save()
     return redirect('studyapp:home')
@@ -39,8 +32,8 @@ def createaccount(request):
     return render(request, 'content/RegistUser.html')
 #######アカウント作成終了########
 
-#######パスワード再設定(リンク)#########
+#######パスワード再設定1(ユーザー確認)#########
 def password(request):
-  template_name="content/ForgetPassword.html"
-  return render(request,template_name)
+  if request.method=="POST":
+    object=User.objects.all
 #######パスワード再設定終了############

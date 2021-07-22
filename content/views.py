@@ -32,16 +32,10 @@ def create_user(request):
     return render(request, 'content/RegistUser.html')
 #######アカウント作成終了########
 
-#######パスワード再設定1(ユーザー確認)#########
-def password(request):
-  if request.method=="POST":
-    object=User.objects.all
-#######パスワード再設定終了############
-
 #####勉強時間の記録#######
 def studytime(request):
-  if request.mothod=="POST":
-    object=StudyTime.objects.all(
+  if request.method=="POST":
+    object=StudyTime.objects.create(
       text=request.POST['text'],
       time=request.POST['time'],
       category=request.POST['category'],
@@ -49,4 +43,18 @@ def studytime(request):
     object.save()
     return redirect('studyapp:home')
   else:
-    return render(request,'cotent/AddStudyLog.html')
+    return render(request,'content/AddStudyLog.html')
+#####勉強時間の記録終了#########
+
+#####勉強時間の出力###########
+def print_studytime(request):
+  object=StudyTime.objects.filter(time,regist_date)
+  context={'time':time,'date':regist_date}
+  return render(request,'content/home-after-login.html',context)
+####勉強時間の出力終了########
+
+####登録サイト(リンク)###########
+def registsite(request):
+  template_name="content/RegistSite.html"
+  return render(request,template_name)
+######登録サイト(リンク)終了#######

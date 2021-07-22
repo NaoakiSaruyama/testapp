@@ -9,7 +9,7 @@ app_name='studyapp'
 urlpatterns=[
   path('home/',views.home,name='home'),
   path('login/',Login.as_view(),name='login'),
-  path('password',views.password,name='password'),
   path('create_user/',views.create_user,name='create_user'),
-  path('studytime/',views.studytime,name='studytime'),
+  path('studylog/',views.studytime,name='studylog'),
+  path('registsite/',views.registsite,name='registsite'),
 ]

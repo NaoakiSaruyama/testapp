@@ -4,7 +4,8 @@
 
 <body>
   <div class="location">
-    <form>
+    <form action="" method="POST">
+      {% csrf_token%}
       <div class="inputs">
         <label class="label">使用教材</label>
         <input class="input_form" type="text" name="text">

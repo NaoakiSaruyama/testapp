@@ -1,7 +1,7 @@
 from django.http import request
 from content.forms import LoginForm
 from django.shortcuts import redirect, render
-from .models import User
+from .models import User,StudyTime
 
 # Create your views here.
 from django.contrib.auth.views import LoginView, LogoutView
@@ -22,7 +22,7 @@ def home(request):
 def create_user(request):
   if request.method == 'POST':
     object = User.objects.create(
-      key = request.POST['email'],
+      email = request.POST['email'],
       name = request.POST['username'],
       password = request.POST['password'],
     )
@@ -37,3 +37,16 @@ def password(request):
   if request.method=="POST":
     object=User.objects.all
 #######パスワード再設定終了############
+
+#####勉強時間の記録#######
+def studytime(request):
+  if request.mothod=="POST":
+    object=StudyTime.objects.all(
+      text=request.POST['text'],
+      time=request.POST['time'],
+      category=request.POST['category'],
+    )
+    object.save()
+    return redirect('studyapp:home')
+  else:
+    return render(request,'cotent/AddStudyLog.html')

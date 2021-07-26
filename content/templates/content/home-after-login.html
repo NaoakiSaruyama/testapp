@@ -99,22 +99,29 @@
             <div class="listen-wrap">
               <ul>
                 <li>
-                  <span class="count">176</span>
-                  <span>total</span>
+                  {% if contents.time==0 %}
+                    <span class="count">0</span>
+                    <span>total</span>
+                  {% else %}
+                    <span class="count">{{time}}</span>
+                    <span>total</span>
+                  {% endif %}
                 </li>
                 <li>
                   <span class="count">50</span>
                   <span>week</span>
                 </li>
                 <li>
-                  <span class="count">176</span>
+                {% if contents.date|is_today%}
+                  <span class="count">{{time}}</span>
                   <span>today</span>
+                {{% endif %}}
                 </li>
               </ul>
             </div>
           </div>
           <div class="chart-wrapper" id="chart-bar">
-            <h1 class="bargraph-detail">Status</h1>
+            <h1 class="bargraph-detail">month</h1>
             <ul class="vbroadcast-legend">
               <li class="total">学習時間</li>
             </ul>
@@ -128,7 +135,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script>
-    $(".wrapper").delay(600).fadeIn(500);
+    $(".wrapper").delay(500).fadeIn(450);
       var barDataset = [
         {
           "date": 1,
@@ -344,7 +351,7 @@
           .attr("x", "-5em")
           .attr("y", "-2.5em")
           .style("text-anchor", "end")
-          .text("Number of calls sent");
+          .text("総学習時間");
 
 
         function type(d) {

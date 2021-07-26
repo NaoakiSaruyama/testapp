@@ -48,9 +48,9 @@ def studytime(request):
 
 #####勉強時間の出力###########
 def print_studytime(request):
-  object=StudyTime.objects.filter(time,regist_date)
-  context={'time':time,'date':regist_date}
-  return render(request,'content/home-after-login.html',context)
+  object=StudyTime.objects.filter(auth=request.user)
+  contents={'time':object.time,'date':object.regist_date}
+  return render(request,'content/home-after-login.html',contents)
 ####勉強時間の出力終了########
 
 ####登録サイト(リンク)###########

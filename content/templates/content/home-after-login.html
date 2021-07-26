@@ -74,10 +74,6 @@
           <li><a href="{% url 'studyapp:registsite' %}">登録サイト</a></li>
         </ul>
       </nav>
-      <ul class="social-links list-inline unstyled list-hover-slide">
-        <li><a href="#">Twitter</a></li>
-        <li><a href="#">Google+</a></li>
-      </ul>
     </div>
   </header>
   <!--end base.html-->
@@ -121,7 +117,7 @@
             </div>
           </div>
           <div class="chart-wrapper" id="chart-bar">
-            <h1 class="bargraph-detail">month</h1>
+            <h1 class="bargraph-detail"></h1>
             <ul class="vbroadcast-legend">
               <li class="total">学習時間</li>
             </ul>
@@ -135,6 +131,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script>
+    {
+      var date = new Date()
+      month = date.getMonth() + 1
+      document.getElementsByClassName("bargraph-detail").innerText = month + "月"
+    }
     $(".wrapper").delay(500).fadeIn(450);
       var barDataset = [
         {

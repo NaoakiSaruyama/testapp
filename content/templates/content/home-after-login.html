@@ -95,23 +95,16 @@
             <div class="listen-wrap">
               <ul>
                 <li>
-                  {% if contents.time==0 %}
-                    <span class="count">0</span>
-                    <span>total</span>
-                  {% else %}
                     <span class="count">{{time}}</span>
                     <span>total</span>
-                  {% endif %}
                 </li>
                 <li>
                   <span class="count">50</span>
                   <span>week</span>
                 </li>
                 <li>
-                {% if contents.date|is_today%}
-                  <span class="count">{{time}}</span>
+                  <span class="count">{{today_total}}</span>
                   <span>today</span>
-                {{% endif %}}
                 </li>
               </ul>
             </div>
@@ -134,7 +127,7 @@
     {
       var date = new Date()
       month = date.getMonth() + 1
-      document.getElementsByClassName("bargraph-detail").innerText = month + "月"
+      document.getElementsByClassName("bargraph-detail")[0].innerText = month + "月"
     }
     $(".wrapper").delay(500).fadeIn(450);
       var barDataset = [

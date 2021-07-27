@@ -1,10 +1,11 @@
+import datetime
 from django.http import request
 from content.forms import LoginForm
 from django.shortcuts import redirect, render
-from .models import User,StudyTime
+from .models import Userdata,StudyTime
 
 # Create your views here.
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 
 #####ログイン#######
 class Login(LoginView):
@@ -21,7 +22,7 @@ def home(request):
 #####アカウント作成##########
 def create_user(request):
   if request.method == 'POST':
-    object = User.objects.create(
+    object = Userdata.objects.create(
       email = request.POST['email'],
       name = request.POST['username'],
       password = request.POST['password'],
@@ -49,7 +50,16 @@ def studytime(request):
 #####勉強時間の出力###########
 def print_studytime(request):
   object=StudyTime.objects.filter(auth=request.user)
-  contents={'time':object.time,'date':object.regist_date}
+  #日の勉強時間
+  d=datetime.date.today()
+  d_date=StudyTime.objects.filter(regist_date=d)
+  d_time=d_date.values(StudyTime).annotate(today_total=Sum(StudyTime.time))
+
+  contents={
+    'time':object.time,
+    'date':object.regist_date,
+    'today_total':d_time,
+    }
   return render(request,'content/home-after-login.html',contents)
 ####勉強時間の出力終了########
 

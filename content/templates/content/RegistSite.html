@@ -76,9 +76,9 @@
     <div class="nav-wrap">
       <nav class="main-nav" role="navigation">
         <ul class="unstyled list-hover-slide">
-          <li><a href="./home-after-login.html">ホーム</a></li>
+          <li><a href="{% url 'studyapp:home '}">ホーム</a></li>
           <li><a href="./sign-in.html">ログアウト</a></li>
-          <li><a href="./RegistSite.html">登録サイト</a></li>
+          <li><a href="{% url 'studyapp:registsite' %}">登録サイト</a></li>
         </ul>
       </nav>
       <ul class="social-links list-inline unstyled list-hover-slide">
@@ -91,7 +91,7 @@
   <!--学習ログタイトル，ボタン-->
   <div class="register-name"><span>登録サイト</span></div>
   <div class="button-addstudylog-location">
-    <a href="./regist-site-form.html" class="button-addstudylog">サイト登録＋</a>
+    <a href="{% url 'studyapp:registform' %}" class="button-addstudylog">サイト登録＋</a>
   </div>
   <!--学習ログタイトル，ボタン　おわり-->
   <!--ユーザーの要録サイト-->

@@ -1,10 +1,11 @@
 <div>
-  <link rel="stylesheet" href="./../../content/static/css/regist-site-form.css">
+  <link rel="stylesheet" href="./../../static/css/regist-site-form.css">
 </div>
 
 <body>
   <div class="location">
-    <form>
+    <form action="" method="POST">
+      {% csrf_token %}
       <div class="inputs">
         <label class="label">url</label>
         <input class="input_form" type="url" name="url">
@@ -23,3 +24,4 @@
     </form>
   </div>
 </body>
+

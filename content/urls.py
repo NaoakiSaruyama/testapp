@@ -12,4 +12,5 @@ urlpatterns=[
   path('create_user/',views.create_user,name='create_user'),
   path('studylog/',views.studytime,name='studylog'),
   path('registsite/',views.registsite,name='registsite'),
+  path('registform',views.registform,name='registform')
 ]

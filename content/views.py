@@ -1,8 +1,10 @@
 import datetime
+
+from django.conf.urls import url
+from .models import Userdata,StudyTime,Registsite
 from django.http import request
 from content.forms import LoginForm
 from django.shortcuts import redirect, render
-from .models import Userdata,StudyTime
 
 # Create your views here.
 from django.contrib.auth.views import LoginView
@@ -52,8 +54,8 @@ def print_studytime(request):
   object=StudyTime.objects.filter(auth=request.user)
   #日の勉強時間
   d=datetime.date.today()
-  d_date=StudyTime.objects.filter(regist_date=d)
-  d_time=d_date.values(StudyTime).annotate(today_total=Sum(StudyTime.time))
+  d_conditions=StudyTime.objects.filter(regist_date=d)
+  d_time=d_conditions.values(StudyTime).annotate(today_total=Sum(StudyTime.time))
 
   contents={
     'time':object.time,
@@ -68,3 +70,17 @@ def registsite(request):
   template_name="content/RegistSite.html"
   return render(request,template_name)
 ######登録サイト(リンク)終了#######
+
+#####登録フォーム#######
+def registform(request):
+  if request.method=="POST":
+    object=Registsite.objects.create(
+      url=request.POST["url"],
+      title=request.POST["name"],
+      category=request.POST["category"],
+    )
+    object.save()
+    return redirect('stydyapp:registsite')
+  else:
+    return render(request,'content/regist-site-form.html')
+#####登録フォーム#######

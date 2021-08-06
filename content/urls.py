@@ -7,8 +7,10 @@ from . import views
 app_name='studyapp'
 
 urlpatterns=[
-  path('home/',views.home,name='home'),
+  path('',views.BeforeLogin,name='BeforeLogin'),
+  path('home/',views.print_studytime,name='home'),
   path('login/',Login.as_view(),name='login'),
+  path('login/password',views.password,name='password'),
   path('create_user/',views.create_user,name='create_user'),
   path('studylog/',views.studytime,name='studylog'),
   path('registsite/',views.registsite,name='registsite'),

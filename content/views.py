@@ -61,7 +61,6 @@ def studytime(request):
 @login_required
 def print_studytime(request):
   total_object=StudyTime.objects.filter(auth=request.user)
-  #total_object=StudyTime.objects.all()
 
   today=datetime.date.today()
   ###今日の勉強レコードの登録

@@ -8,5 +8,6 @@ class Userbackend(ModelBackend):
     except Userdata.DoesNotExist:
       return None
     else:
-      if user.check_password(password) and self.user_can_authenticate(user):
+
+      if password == user.password and self.user_can_authenticate(user):
         return user

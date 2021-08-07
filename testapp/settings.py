@@ -127,6 +127,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login'
 
+AUTH_USER_MODEL='content.Userdata'
+LOGIN_URL='studyapp:login'
+
+LOGIN_REDIRECT_URL='studyapp:home'
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'content.backends.Userbackend',

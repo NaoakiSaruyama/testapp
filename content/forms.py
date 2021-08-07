@@ -47,6 +47,23 @@ class EmailAuthenticationForm(Form):
     for field in self.fields.values():
       field.widget.attrs["placeholder"]=field.label
 
+  def confirm_login_allowed(self, user):
+    if not user.is_active:
+      raise forms.ValidationError(
+        self.error_messages['inactive'],
+        code='inactive',
+      )
+
+  def get_user(self):
+    return self.user_cache
+
+  def get_invalid_login_error(self):
+    return forms.ValidationError(
+      self.error_messages['invalid_login'],
+      code='invalid_login',
+      params={'username':_('Email')},
+    )
+
   def clean(self):
     email=self.cleaned_data.get('email')
     password=self.cleaned_data.get('password')
@@ -59,25 +76,6 @@ class EmailAuthenticationForm(Form):
         self.confirm_login_allowed(self.user_cache)
 
       return self.cleaned_data
-
-
-    def confirm_login_allowed(self, user):
-        if not user.is_active:
-            raise forms.ValidationError(
-                self.error_messages['inactive'],
-                code='inactive',
-            )
-
-
-    def get_user(self):
-      return self.user_cache
-
-    def get_invalid_login_error(self):
-      return forms.ValidationError(
-        self.error_messages['invalid_login'],
-        code='invalid_login',
-        params={'username':_('Email')},
-      )
 ######ログイン終わり#######
 
 

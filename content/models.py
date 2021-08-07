@@ -10,11 +10,14 @@ from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, Permi
 
 #ユーザー登録
 class UserManager(BaseUserManager):
+
+  use_in_migrations=True
+
   def create_user(self,username,email,date,password=None):
     if not username:
-      raise ValueError('Users must have an name')
+      raise ValueError('The given username must be set')
     elif not email:
-      raise ValueError('Users must have an email adress')
+      raise ValueError('The given email must be set')
     user = self.model(
       name=username,
       email = self.normalize_email(email),
@@ -35,17 +38,17 @@ class UserManager(BaseUserManager):
     return user
 
 class Userdata(AbstractBaseUser,PermissionsMixin):
-  name = models.CharField(verbose_name='ユーザー名',max_length=15,unique=True)
+  name = models.CharField(verbose_name='ユーザー名',max_length=50,unique=True)
   email = models.EmailField(verbose_name='ユーザーid',max_length=30,unique=True)
   password = models.CharField(verbose_name='パスワード',max_length=15)
-  regist_date = models.DateTimeField(default=timezone.now)
+  date_joined = models.DateTimeField(default=timezone.now)
   is_staff = models.BooleanField(default=False)
   is_active = models.BooleanField(default=True)
 
-  objects=UserManager()#Userdata.objectsの時に使うobjects
+  objects=UserManager()
 
-  EMAIL_FIELD = 'email'# email = models.EmailField(verbose_name='ユーザーid',max_length=30,unique=True)
-  USERNAME_FIELD = 'email'# email = models.EmailField(verbose_name='ユーザーid',max_length=30,unique=True)
+  EMAIL_FIELD = 'email'
+  USERNAME_FIELD = 'email'
   REQUIRED_FIELDS = []
 
 

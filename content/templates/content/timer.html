@@ -1,0 +1,41 @@
+<head>
+  <link rel="stylesheet" href="./../../static/css/base.css">
+  <link rel="stylesheet" href="./../../static/css/timer.css">
+</head>
+<body>
+
+<!--base.html-->
+  <header class="header" role="banner">
+    <h1 class="logo">
+      <span>STUDYAPP</span>
+    </h1>
+    <div class="nav-wrap">
+      <nav class="main-nav" role="navigation">
+        <ul class="unstyled list-hover-slide">
+          <li><a href="{% url 'studyapp:home '}">ホーム</a></li>
+          <li><a href="./sign-in.html">ログアウト</a></li>
+          <li><a href="./timer.html">タイマー</a></li>
+          <li><a href="{% url 'studyapp:registsite' %}">登録サイト</a></li>
+        </ul>
+      </nav>
+      <ul class="social-links list-inline unstyled list-hover-slide">
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Google+</a></li>
+      </ul>
+    </div>
+  </header>
+  <!--end base.html-->
+  <div class="timer_location">
+    <div class="timer_design">
+      <div id="stopwatch">
+        00:00:00
+      </div>
+      <ul id="buttons">
+        <li><button onclick="startTimer()">Start</button></li>
+        <li><button onclick="stopTimer()">Stop</button></li>
+        <li><button onclick="resetTimer()">Reset</button></li>
+      </ul>
+    </div>
+  </div>
+  <script src="./../../static/js/timer.js"></script>
+</body>

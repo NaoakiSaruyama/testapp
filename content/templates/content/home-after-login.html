@@ -1,4 +1,5 @@
 <head>
+  <title>studyapp</title>
   <link rel="stylesheet" type="text/css"
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="./../../static/css/base.css">
@@ -70,7 +71,8 @@
       <nav class="main-nav" role="navigation">
         <ul class="unstyled list-hover-slide">
           <li><a href="{% url 'studyapp:home' %}">マイページ</a></li>
-          <li><a href="./home-before-login.html">ログアウト</a></li>
+          <li><a href="{% url 'studyapp:BeforeLogin'%}">ログアウト</a></li>
+          <li><a href="./timer.html">タイマー</a></li>
           <li><a href="{% url 'studyapp:registsite' %}">登録サイト</a></li>
         </ul>
       </nav>

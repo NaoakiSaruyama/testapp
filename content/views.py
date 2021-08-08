@@ -1,10 +1,10 @@
 import datetime
 from django.contrib.auth.views import LoginView
 from django.conf.urls import url
-from .models import Userdata,StudyTime,Registsite
+from .models import Userdata,StudyTime,Registsite,UserManager
 from django.http import request
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.db.models import Sum
 from .forms import EmailAuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -18,11 +18,18 @@ def BeforeLogin(request):
   return render(request,template_name)
 #####ログイン前######
 
+
 #####ログイン#######
 class Login(LoginView):
   form_class = EmailAuthenticationForm
   template_name="content/SignIn.html"
 ######ログイン終わり#########
+
+#####ログアウト#######
+def Logout(request):
+  logout(request)
+  return redirect(request,'studyapp:BeforeLogin')
+####ログアウト終了####
 
 #####パスワードの再設定#######
 def password(request):

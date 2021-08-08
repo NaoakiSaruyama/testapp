@@ -1,5 +1,5 @@
-from django.contrib.auth import views
-from content.views import Login
+from django.contrib.auth import logout, views
+from content.views import Login, Logout
 from django.urls import path
 from django.urls.resolvers import URLPattern
 from . import views
@@ -10,6 +10,7 @@ urlpatterns=[
   path('',views.BeforeLogin,name='BeforeLogin'),
   path('home/',views.print_studytime,name='home'),
   path('login/',Login.as_view(),name='login'),
+  path('logout/',views.Logout,name='logout'),
   path('login/password',views.password,name='password'),
   path('create_user/',views.create_user,name='create_user'),
   path('studylog/',views.studytime,name='studylog'),

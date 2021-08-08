@@ -76,6 +76,13 @@ class EmailAuthenticationForm(Form):
         self.confirm_login_allowed(self.user_cache)
 
       return self.cleaned_data
+
+  def confirm_login_allowed(self, user):
+    if not user.is_active:
+      raise forms.ValidationError(
+        self.error_messages['inactive'],
+        code='inactive',
+      )
 ######ログイン終わり#######
 
 

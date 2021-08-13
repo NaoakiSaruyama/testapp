@@ -5,19 +5,14 @@
 <body>
   <div class="form-wrapper">
     <h1>ユーザー確認</h1>
-    <form>
+    <form action="" method="POST">
+    {% csrf_token %}
       <div class="form-item">
-        <label for="Create"></label>
-        <input name="Create" required="required" placeholder="パスワードを入力してください"></input>
-      </div>
-      <div class="form-item">
-        <label for="Check"></label>
-        <input name="Check" required="required" placeholder="再度パスワードを入力してください"></input>
+        <label for="email"></label>
+        <input type="email" name="email" required="required" placeholder="Email*"></input>
       </div>
       <div class="button-panel">
-        <a href="./home-after-login.html">
-          <input type="submit" class="button" title="Create new password" value="新しいパスワードを作る"></input>
-        </a>
+        <input type="submit" class="button" title="Create new password" value="新しいパスワードを作る"></input>
       </div>
     </form>
     <div class="form-footer">

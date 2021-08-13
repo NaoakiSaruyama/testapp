@@ -9,7 +9,15 @@ transform: translate(-50%,0%);
     color: #000;
 }
 
-.timerbutton {
+form{
+    display: inline-block ;
+}
+
+.totaltime{
+    display: none;
+}
+
+button {
     width: 100px;
     height: 30px;
     border-radius: 50px;
@@ -30,11 +38,9 @@ transform: translate(-50%,0%);
     position: absolute;
     top: 55%;
     left: 48.4%;
-    transform: translate(-50%, 200%);
+    transform: translate(-51.6%, 130%);
 }
 #buttons li {
     display: inline;
     padding-left: 10px;
-
-
 }

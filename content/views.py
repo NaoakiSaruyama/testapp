@@ -1,10 +1,17 @@
 import datetime
+from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.views import LoginView
 from django.conf.urls import url
+from django.http.response import HttpResponse
 from .models import Userdata,StudyTime,Registsite,UserManager
 from django.http import request
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, logout
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+from django.template.loader import render_to_string
+from django.contrib import messages
+from django.utils.encoding import force_bytes
 from django.db.models import Sum
 from .forms import EmailAuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -31,11 +38,6 @@ def Logout(request):
   return redirect(request,'studyapp:BeforeLogin')
 ####ログアウト終了####
 
-#####パスワードの再設定#######
-def password(request):
-  template_name="content/ForgetPassword.html"
-  return render(request,template_name)
-
 #####アカウント作成##########
 def create_user(request):
   if request.method == 'POST':
@@ -50,10 +52,49 @@ def create_user(request):
     return render(request, 'content/RegistUser.html')
 #######アカウント作成終了########
 
+######パスワードの変更(未完成)########
+
+#パスワード変更ページへのリンク
+#def pass_for_changepassword(request):
+#  return render(request,'content/CreateNewPassword')
+def pass_for_changepassword(request):
+  if request.method == "POST":
+    post_email = request.POST['email']
+    associated_users = Userdata.objects.filter(email=post_email)
+    if associated_users.exists():
+      for user in associated_users:
+        subject= "パスワードのリセットを受け付けました"
+        email_template_name = "content/password/password_reset_email.txt"
+        c={
+          "email":user.email,
+          'domain':'127.0.0.1:8000',
+					'site_name': 'Website',
+          "uid":urlsafe_base64_encode(force_bytes(user.pk)),
+          "user":user,
+          'token':default_token_generator.make_token(user),
+          'protocol':'http'
+        }
+        email = render_to_string(email_template_name,c)
+        try:
+          send_mail(subject,email,'admin@example.com',[user.email], fail_silently=False)
+        except BadHeaderError:
+          return HttpResponse('Invalid header found.')
+        messages.success(request, 'A message with reset password instructions has been sent to your inbox.')
+        return redirect('studyapp:BeforeLogin')
+  return render(request,'content/UserCheck.html')
+
+#パスワード変更ページ(要らない)#
+def changepassword(request):
+  template_name='content/UserCheck.html'
+  return render(request,template_name)
+
+########パスワードの変更######
+
 #####勉強時間の記録#######
 def studytime(request):
   if request.method=="POST":
     object=StudyTime.objects.create(
+      auth=request.user,
       text=request.POST['text'],
       time=request.POST['time'],
       category=request.POST['category'],
@@ -70,7 +111,7 @@ def print_studytime(request):
   total_object=StudyTime.objects.filter(auth=request.user)
 
   today=datetime.date.today()
-  ###今日の勉強レコードの登録
+  #今日の勉強レコードの登録
   daily_object=total_object.filter(regist_date__date=today)
 
   # 週の勉強登録レコードを抽出
@@ -108,10 +149,11 @@ def registsite(request):
   return render(request,template_name)
 ######登録サイト(リンク)終了#######
 
-#####登録フォーム#######
+#####登録フォーム(未完成)#######
 def registform(request):
   if request.method=="POST":
     object=Registsite.objects.create(
+      auth=request.user,
       url=request.POST["url"],
       title=request.POST["name"],
       category=request.POST["category"],

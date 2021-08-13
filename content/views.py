@@ -1,9 +1,10 @@
 import datetime
+from django.contrib import auth
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.views import LoginView
 from django.conf.urls import url
 from django.http.response import HttpResponse
-from .models import Userdata,StudyTime,Registsite,UserManager
+from .models import Userdata,StudyTime,Registsite,Timer
 from django.http import request
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, logout
@@ -55,8 +56,10 @@ def create_user(request):
 ######パスワードの変更(未完成)########
 
 #パスワード変更ページへのリンク
-#def pass_for_changepassword(request):
-#  return render(request,'content/CreateNewPassword')
+def CreateNewPassword(request):
+  return render(request,'content/CreateNewPassword')
+
+#パスワード変更用のメール
 def pass_for_changepassword(request):
   if request.method == "POST":
     post_email = request.POST['email']
@@ -80,13 +83,17 @@ def pass_for_changepassword(request):
         except BadHeaderError:
           return HttpResponse('Invalid header found.')
         messages.success(request, 'A message with reset password instructions has been sent to your inbox.')
-        return redirect('studyapp:BeforeLogin')
+        return redirect('studyapp:password_reset_done')
   return render(request,'content/UserCheck.html')
 
 #パスワード変更ページ(要らない)#
 def changepassword(request):
   template_name='content/UserCheck.html'
   return render(request,template_name)
+
+#パスワード変更後ページ
+def password_reset_done(request):
+  return render(request,template_name='content/password_reset_done.html')
 
 ########パスワードの変更######
 
@@ -95,7 +102,7 @@ def studytime(request):
   if request.method=="POST":
     object=StudyTime.objects.create(
       auth=request.user,
-      text=request.POST['text'],
+      regist_date=request.POST['date'],
       time=request.POST['time'],
       category=request.POST['category'],
     )
@@ -109,28 +116,31 @@ def studytime(request):
 @login_required
 def print_studytime(request):
   total_object=StudyTime.objects.filter(auth=request.user)
+  timer_total_object=Timer.objects.filter(auth=request.user)
 
   today=datetime.date.today()
   #今日の勉強レコードの登録
   daily_object=total_object.filter(regist_date__date=today)
+  timer_daily_object=timer_total_object.filter(date__date=today)
 
   # 週の勉強登録レコードを抽出
   week_monday = today - datetime.timedelta(days=today.isoweekday() + 1)
   week_sunday=week_monday+datetime.timedelta(days=6)
   weekly_object=total_object.filter(regist_date__range=[week_monday,week_sunday])
+  timer_weekly_object=timer_total_object.filter(rdate__range=[week_monday,week_sunday])
 
   # 週の合計時間を計算
-  weekly_time=weekly_object.aggregate(Sum('time'))
+  weekly_time=weekly_object.aggregate(Sum('time')) + timer_weekly_object.aggregate(Sum('time'))
   if weekly_time['time__sum'] is None:
     weekly_time['time__sum']=0
 
   # 総学習時間
-  total_time=total_object.aggregate(Sum('time'))
+  total_time=total_object.aggregate(Sum('time')) + timer_total_object.aggregate(Sum('time'))
   if total_time['time__sum'] is None:
     total_time['time__sum']=0
 
   #今日の学習時間
-  daily_time=daily_object.aggregate(Sum('time'))
+  daily_time=daily_object.aggregate(Sum('time')) + timer_daily_object.aggregate(Sum('time'))
   if daily_time['time__sum'] is None:
     daily_time['time__sum']=0
 
@@ -142,6 +152,22 @@ def print_studytime(request):
     }
   return render(request,'content/home-after-login.html',contents)
 ####勉強時間の出力終了########
+
+####タイマーの時間記録########
+def timer(request):
+  if request.method == "POST":
+    object = Timer.objects.create(
+      auth=request.user,
+      date=request.POST['date'],
+      category=request.POST['category'],
+      time=request.POST['time'],
+    )
+    object.save()
+    return redirect('studyapp:timer')
+  else:
+    return render(request,'content/timer.html')
+####タイマーの時間記録終了####
+
 
 ####登録サイト(リンク)###########
 def registsite(request):

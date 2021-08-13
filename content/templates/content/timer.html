@@ -21,10 +21,6 @@
           <li><a href="{% url 'studyapp:registsite' %}">登録サイト</a></li>
         </ul>
       </nav>
-      <ul class="social-links list-inline unstyled list-hover-slide">
-        <li><a href="#">Twitter</a></li>
-        <li><a href="#">Google+</a></li>
-      </ul>
     </div>
   </header>
   <!--end base.html-->
@@ -48,27 +44,28 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">カスタムJavaScriptでfocus設定</h5>
+          <h5 class="modal-title" id="myModalLabel">勉強時間の記録</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="閉じる"><span
               aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
           <form action="" method="POST" class="px-4 py-3">
+          {% csrf_token %}
+            <div class="form-group">
+              <label for="exampleFormPassword">日付</label>
+              <input type="date" class="form-control" id="today" name="date">
+            </div>
+            <div class="form-group">
+              <label for="exampleFormPassword">分類</label>
+              <input type="text" class="form-control" name="category">
+            </div>
             <div class="form-group">
               <label for="exampleFormEmail">勉強時間(分)</label>
-              <input type="number" class="form-control" id="exampleFormEmail">
-            </div>
-            <div class="form-group">
-              <label for="exampleFormPassword">パスワード</label>
-              <input type="password" class="form-control" id="exampleFormPassword" placeholder="パスワード">
-            </div>
-            <div class="form-group">
-              <label for="exampleFormPassword">パスワード</label>
-              <input type="password" class="form-control" id="exampleFormPassword" placeholder="パスワード">
+              <input type="number" class="form-control"  name="time" id="time">
             </div>
             <div class="form-check">
             </div>
-            <button type="submit" class="btn btn-primary">サインイン</button>
+            <button type="submit" class="btn btn-primary">登録</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
           </form>
         </div>
@@ -87,34 +84,12 @@
         if (stoptime == true) {
           stoptime = false;
           timerCycle();
-
         }
       }
       function stopTimer() {
         if (stoptime == false) {
           stoptime = true;
-          //終了時間の取得
-          let d2 = new Date();
-          t_end = d2.getTime();
-          //input要素の追加
-          const newEle = document.createElement('input');
-          newEle.classList.add('totaltime');
-          const reference = document.querySelector('.regist_time');
-          const parent = reference.parentNode;
-          parent.insertBefore(newEle,reference);
-          //valueへの値の挿入
-          for(let i=0;;i++){
-            const input  = document.getElementsByClassName('totaltime')[i];
-            if(input ==null){
-              break;
             }
-            const value = input.getAttribute('value');
-            if(value === null){
-              const each_time = (t_end - t_start)/(1000);//分
-              newEle.setAttribute("value",Math.round(each_time));
-            }
-          }
-        }
       }
 
       function timerCycle() {
@@ -157,12 +132,17 @@
         hr = 0;
         sec = 0;
         min = 0;
-        //input要素の削除
-        $('.totaltime').remove();
       }
       function registTimer(){
+        document.getElementById('time').value = 60 * hr +  min + sec
         $('#myModal').on('shown.bs.modal', function () {
-          $('#exampleFormEmail').trigger('focus')
+          $('#today').trigger('focus')
+          var today = new Date();
+          today.setDate(today.getDate());
+          var yyyy = today.getFullYear();
+          var mm = ("0" + (today.getMonth() + 1)).slice(-2);
+          var dd = ("0" + today.getDate()).slice(-2);
+          document.getElementById("today").value = yyyy + '-' + mm + '-' + dd;
         })
         timer.innerHTML = '00:00:00';
         stoptime = true;

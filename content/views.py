@@ -72,6 +72,7 @@ def pass_for_changepassword(request):
           "email":user.email,
           'domain':'127.0.0.1:8000',
 					'site_name': 'Website',
+          'usename':user.name,
           "uid":urlsafe_base64_encode(force_bytes(user.pk)),
           "user":user,
           'token':default_token_generator.make_token(user),
@@ -127,10 +128,10 @@ def print_studytime(request):
   week_monday = today - datetime.timedelta(days=today.isoweekday() + 1)
   week_sunday=week_monday+datetime.timedelta(days=6)
   weekly_object=total_object.filter(regist_date__range=[week_monday,week_sunday])
-  timer_weekly_object=timer_total_object.filter(rdate__range=[week_monday,week_sunday])
+  timer_weekly_object=timer_total_object.filter(date__range=[week_monday,week_sunday])
 
   # 週の合計時間を計算
-  weekly_time=weekly_object.aggregate(Sum('time')) + timer_weekly_object.aggregate(Sum('time'))
+  weekly_time=weekly_object.aggregate(Sum('time'))+timer_weekly_object.aggregate(Sum('time'))
   if weekly_time['time__sum'] is None:
     weekly_time['time__sum']=0
 

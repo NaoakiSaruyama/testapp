@@ -6,7 +6,7 @@ from django.conf.urls import url
 from django.http.response import HttpResponse
 from .models import Userdata,StudyTime,Registsite
 from django.http import request
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, logout
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
@@ -17,6 +17,7 @@ from django.utils.encoding import force_bytes
 from django.db.models import Sum, query
 from .forms import EmailAuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -181,7 +182,7 @@ def registform(request):
     return redirect('studyapp:registsite')
   else:
     return render(request,'content/regist-site-form.html')
-#登録サイトの出力/検索機能
+#登録サイトの出力
 def registsite(request):
   some_object=Registsite.objects.filter(auth=request.user)
   for object in some_object:
@@ -190,8 +191,15 @@ def registsite(request):
       'title':object.title,
       'category':object.category,
     }
-    print(contents)
   return render(request,'content/RegistSite.html',contents)
+
+#@require_POST
+#削除機能
+#def delete(request,delete_id):
+#  registsite = get_object_or_404(Registsite,id=delete_id)
+#  registsite.delete()
+#  return redirect('studuapp/registsite')
+
 
 #検索機能
 def registsite_after_search(request):

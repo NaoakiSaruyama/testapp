@@ -100,7 +100,9 @@
             <td>{{content.category}}</td>
             <td><a href="{{content.url}}">{{content.url}}</a></td>
             <td>
-              <i class="fa fa-trash-o"></i>
+              <button type="submit" onclick='return confirm("本当に削除しますか？");'>
+                <i class="fa fa-trash-o"></i>
+              </button>
             </td>
           </form>
         </tr>

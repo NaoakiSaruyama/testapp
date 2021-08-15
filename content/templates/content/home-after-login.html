@@ -4,81 +4,66 @@
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="./../../static/css/base.css">
   <link rel="stylesheet" href="./../../static/css/bargraph.css">
-<style>
-  .studylog-name{
-    position:absolute;
-    left: 284px;
-  }
+  <style>
+    .studylog-name{
+      position:absolute;
+      left: 284px;
+    }
 
-  .button-addstudylog-location{
-    position: absolute;
-    right: 16px;
-    width: 100vw;
-  }
+    .button-addstudylog-location{
+      position: absolute;
+      right: 16px;
+      width: 100vw;
+    }
 
-  .bargraph-one-location{
-    position: absolute;
-    top: 113px;
-    left: 284px;
-    width: calc(100% - 284px);
-  }
+    .bargraph-one-location{
+      position: absolute;
+      top: 113px;
+      left: 284px;
+      width: calc(100% - 284px);
+    }
 
 
-/*配置終わり*/
+  /*配置終わり*/
 
-/*学習ログデザイン　初め*/
+  /*学習ログデザイン　初め*/
 
-  .button-addstudylog {
-    position: absolute;
-    top: 10px;
-    right: 30px;
-    width: 160px;
-    height: 32px;
-    padding: 7px 20px;
-    font-size: 12;
-    text-align: center;
-    border-radius: 25px;
-    text-decoration: none;
-    color: #FFF;
-    background-color: #ff96a3;
-  }
+    .button-addstudylog {
+      position: absolute;
+      top: 10px;
+      right: 30px;
+      width: 160px;
+      height: 32px;
+      padding: 7px 20px;
+      font-size: 12;
+      text-align: center;
+      border-radius: 25px;
+      text-decoration: none;
+      color: #FFF;
+      background-color: #ff96a3;
+    }
 
-  .studylog-name {
-    display: inline-block;
-    font-size: 16px;
-    height: 57px;
-    text-align: center;
-    font: normal normal normal 40px/53px Segoe UI;
-    letter-spacing: 0px;
-    color: #000000;
-    opacity: 1;
-  }
+    .studylog-name {
+      display: inline-block;
+      font-size: 16px;
+      height: 57px;
+      text-align: center;
+      font: normal normal normal 40px/53px Segoe UI;
+      letter-spacing: 0px;
+      color: #000000;
+      opacity: 1;
+    }
 
-  .studylog-name span{
-    font-size: 28px;
-    font-weight: 600;
-  }
-
-</style>
+    .studylog-name span{
+      font-size: 28px;
+      font-weight: 600;
+    }
+  </style>
 </head>
+{% extends 'content/base.html' %}
+
 <body>
-  <!--base.html-->
-  <header class="header" role="banner">
-    <h1 class="logo">
-      <span>STUDYAPP</span>
-    </h1>
-    <div class="nav-wrap">
-      <nav class="main-nav" role="navigation">
-        <ul class="unstyled list-hover-slide">
-          <li><a href="{% url 'studyapp:home' %}">マイページ</a></li>
-          <li><a href="{% url 'studyapp:BeforeLogin'%}">ログアウト</a></li>
-          <li><a href="./timer.html">タイマー</a></li>
-          <li><a href="{% url 'studyapp:registsite' %}">登録サイト</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <!--end base.html-->
+  {% block content%}
   <!--学習ログタイトル，ボタン-->
   <div class="studylogs-location">
     <div class="studylog-name"><span>学習ログ</span></div>
@@ -422,4 +407,5 @@
         });
       });
   </script>
+  {% endblock %}
 </body>

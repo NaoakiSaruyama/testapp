@@ -1,0 +1,39 @@
+<style>
+  .tab-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 50px;
+    margin-top: 80px;
+    ma
+  }
+.tab-label {
+    color: White;
+    background: LightGray;
+    padding: 3px 12px;
+    order:-1;
+  }
+.tab-content {
+    width: 100%;
+    display: none;
+  }
+.tab-switch:checked+.tab-label {
+    background: #ff96a3;
+  }
+.tab-switch:checked+.tab-label+.tab-content {
+    display: block;
+  }
+.tab-switch {
+    display: none;
+  }
+
+</style>
+
+<body>
+  <!--タブ切り替え-->
+  <div class="tab-wrap">
+    <input id="TAB-01" type="radio" name="TAB" class="tab-switch" checked="checked" /><label class="tab-label"
+      for="TAB-01">マイサイト</label>
+    <input id="TAB-02" type="radio" name="TAB" class="tab-switch" /><label class="tab-label" for="TAB-02">みんなのサイト</label>
+  </div>
+  <!--タブ切り替え終了-->
+</body>

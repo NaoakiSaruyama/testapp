@@ -79,7 +79,7 @@
   <!--学習ログタイトル，ボタン　おわり-->
   <!--検索欄-->
   <form method="GET" action="#" class="search_container">
-    <input type="text" size="25" name="search" placeholder="検索">
+    <input type="text" size="25"  name="search" placeholder="検索">
     <input type="submit" value="&#xf002">
   </form>
   <!--検索欄終わり-->
@@ -93,18 +93,18 @@
           <th>リンク</th>
           <th>削除</th>
         </tr>
-        {% for content in contents %}
+        {% for item in querysets %}
         <tr>
           <form action="" method="POST">
-            <td>{{content.title}}</td>
-            <td>{{content.category}}</td>
-            <td><a href="{{content.url}}">{{content.url}}</a></td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.category }}</td>
+            <td><a href="{{ item.url }}">{{ item.url }}</a></td>
             <td>
-              <i class="fa fa-trash-o"></i>
+              <i class="far fa-trash-alt"></i>
+              <input type="submit">
             </td>
           </form>
         </tr>
-        {% endfor %}
       </table>
     </div>
   </div>

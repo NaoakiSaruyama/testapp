@@ -1,8 +1,8 @@
 .timer_location{
-position: relative;
-top: 45%;
-left: calc(130px + 50%);
-transform: translate(-50%,0%);
+    position: relative;
+    top: 45%;
+    left: calc(130px + 50%);
+    transform: translate(-50%,0%);
 }
 
 .timer_design {
@@ -35,6 +35,4 @@ transform: translate(-50%,0%);
 #buttons li {
     display: inline;
     padding-left: 10px;
-
-
 }

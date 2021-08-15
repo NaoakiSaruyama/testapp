@@ -52,24 +52,17 @@ class Userdata(AbstractBaseUser,PermissionsMixin):
   REQUIRED_FIELDS = []
 
 
-#学習時間(ログ)
+#学習時間
 class StudyTime(models.Model):
   auth=models.ForeignKey(Userdata,on_delete=models.CASCADE,null=True)
   time=models.PositiveSmallIntegerField(verbose_name='勉強時間',validators=[MaxLengthValidator(1440)])
   category=models.CharField(verbose_name='分類',max_length=20)
-  regist_date=models.DateTimeField(default=timezone.now)
-
-
-#勉強時間(タイマー)
-class Timer(models.Model):
-  auth = models.ForeignKey(Userdata,on_delete=models.CASCADE,null=True)
-  time=models.PositiveSmallIntegerField(verbose_name='勉強時間',validators=[MaxLengthValidator(1440)])
-  category=models.CharField(verbose_name='分類',max_length=20)
-  date=models.DateTimeField(default=timezone.now)
+  regist_date=models.DateTimeField()
 
 #登録サイト
 class Registsite(models.Model):
   auth=models.ForeignKey(Userdata,on_delete=models.CASCADE,null=True)
-  url=models.URLField()
   title=models.CharField(verbose_name="サイト名",max_length=30)
   category=models.CharField(verbose_name="分類",max_length=30)
+  url=models.URLField()
+  regist_date=models.DateTimeField(default=timezone.now)

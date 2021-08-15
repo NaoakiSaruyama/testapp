@@ -152,7 +152,7 @@ def print_studytime(request):
 
 ###勉強時間###
 
-###勉強時間
+###勉強時間###
 ####タイマーの時間記録########
 def timer(request):
   if request.method == "POST":
@@ -169,7 +169,7 @@ def timer(request):
 ####タイマーの時間記録終了####
 
 
-#####登録フォーム(未完成)#######
+#####登録フォーム#######
 def registform(request):
   if request.method=="POST":
     object=Registsite.objects.create(
@@ -185,34 +185,29 @@ def registform(request):
 #登録サイトの出力
 def registsite(request):
   some_object=Registsite.objects.filter(auth=request.user)
-  for object in some_object:
-    contents={
-      'url':object.url,
-      'title':object.title,
-      'category':object.category,
-    }
-  return render(request,'content/RegistSite.html',contents)
+  return render(request,'content/RegistSite.html',{'contents':some_object})
 
-#@require_POST
+@require_POST
 #削除機能
-#def delete(request,delete_id):
-#  registsite = get_object_or_404(Registsite,id=delete_id)
-#  registsite.delete()
-#  return redirect('studuapp/registsite')
+def registsite_delete(request,delete_id):
+  user =Registsite.objects.filter(auth=request.usr)
+  registsite = get_object_or_404(user,id=delete_id)
+  registsite.delete()
+  return redirect('studyapp/registsite')
 
 
 #検索機能
-def registsite_after_search(request):
-  if  request.method == "GET":
-    queryset = Registsite.objects.order_by('-regist_date')
-    query = request.GET['search']
-    if query:
-      querysets = queryset.filter(
-        Q(title__icontains = query)|Q(category__icontains = query)
-      )
-    return render(request,'content/RegistSite_after_search.html',querysets)
-  else:
-    return render(request,'content/RegistSite.html')
+#def registsite_search(request):
+#  if  request.method == "GET":
+#    queryset = Registsite.objects.order_by('-regist_date')
+#    query = request.GET['search']
+#    if query:
+#      querysets = queryset.filter(
+#        Q(title__icontains = query)|Q(category__icontains = query)
+#      )
+#    return render(request,'content/RegistSite.html',{'q':querysets})
+#  else:
+#    return render(request,'content/RegistSite.html')
 
 
 #####登録フォーム#######

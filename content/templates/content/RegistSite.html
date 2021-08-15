@@ -78,8 +78,8 @@
   </div>
   <!--学習ログタイトル，ボタン　おわり-->
   <!--検索欄-->
-  <form method="GET" action="#" class="search_container">
-    <input type="text" size="25" name="search" placeholder="検索">
+  <form method="GET" action="" class="search_container"><!--{% url 'studyapp:registsite' query %}-->
+    <input type="text" size="25" name="search" placeholder="検索" value=""><!--{{request.GET.search}}-->
     <input type="submit" value="&#xf002">
   </form>
   <!--検索欄終わり-->
@@ -88,19 +88,18 @@
     <div class="registe-site-style">
       <table id="registe-site-table">
         <tr>
-          <th>サイト名</th>
+          <th>サイト名/url</th>
           <th>ジャンル</th>
-          <th>リンク</th>
           <th>削除</th>
         </tr>
         {% for content in contents %}
         <tr>
-          <form action="" method="POST">
-            <td>{{content.title}}</td>
+          <form action="{% url 'studyapp:delete_site' registsite.pk %}" method="POST">
+          {% csrf_token %}
+            <td><a href="{{content.url}}">{{content.title}}</a></td>
             <td>{{content.category}}</td>
-            <td><a href="{{content.url}}">{{content.url}}</a></td>
             <td>
-              <button type="submit" onclick='return confirm("本当に削除しますか？");'>
+              <button type="submit" onclick="return confirm('本当に削除しますか？');">
                 <i class="fa fa-trash-o"></i>
               </button>
             </td>

@@ -17,6 +17,7 @@ urlpatterns=[
   path('timer/',views.timer,name='timer'),
   path('studylog/',views.studytime,name='studylog'),
   path('registsite/',views.registsite,name='registsite'),
-  #path('registsite/<int:delete_id>',views.delete,name="delete_site"),
+  path('registsite/delete/<int:delete_id>',views.registsite_delete,name="delete_site"),
+  #path('registsite/<str:query>',views.registsite_search,name="registsite_search"),
   path('registform',views.registform,name='registform')
 ]

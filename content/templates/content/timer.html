@@ -92,12 +92,15 @@
       console.log(cookie_sec)
       if(cookie_hr){
         hr = cookie_hr
+        $('#stopwatch').hr = hr
       }
       if(cookie_min){
         min = cookie_min
+        $('#stopwatch').min = min
       }
       if(cookie_sec){
         sec = cookie_sec
+        $('#stopwatch').sec = sec
       }
       function stopTimer() {
         if (stoptime == false) {

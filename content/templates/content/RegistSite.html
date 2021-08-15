@@ -78,8 +78,8 @@
   </div>
   <!--学習ログタイトル，ボタン　おわり-->
   <!--検索欄-->
-  <form method="GET" action="" class="search_container"><!--{% url 'studyapp:registsite' query %}-->
-    <input type="text" size="25" name="search" placeholder="検索" value=""><!--{{request.GET.search}}-->
+  <form method="GET" class="search_container"><!--action="{% url 'studyapp:registsite' query %}"-->
+    <input type="text" size="25" name="search" placeholder="検索" ><!--value="{{request.GET.search}}"-->
     <input type="submit" value="&#xf002">
   </form>
   <!--検索欄終わり-->

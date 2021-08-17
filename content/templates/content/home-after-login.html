@@ -101,7 +101,7 @@
             <h1 class="bargraph-detail">
               <form action="" method="GET">
               {% csrf_token %}
-                <input id="bargraph-detail-date" class="bargraph-detail-date" type="month">
+                <input id="bargraph-detail-date" class="bargraph-detail-date" type="month" name="each_month_studylog" value="{% request.GET.each_month_studylog %}">
                 <button class="bargraph-date-submit" type="submit">
                   <i class="fas fa-sync" style="color: #FFF;"></i>
                 </button>
@@ -124,8 +124,15 @@
     var yyyy = today.getFullYear();
     var mm = ("0"+(today.getMonth()+1)).slice(-2);
     document.getElementById("bargraph-detail-date").value = yyyy + '-' + mm
+
+    "{% for queryset in querysets %}"
+
     $(".wrapper").delay(500).fadeIn(450);
       var barDataset = [
+        {
+          "date":1,
+          "total":1,
+        },
         {
           "date": 1,
           "total": 1,

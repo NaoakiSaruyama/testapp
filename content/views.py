@@ -150,9 +150,19 @@ def print_studytime(request):
   return render(request,'content/home-after-login.html',contents)
 ####勉強時間の出力終了########
 
-###勉強時間###
+###勉強時間(グラフ)###
+#def each_month_studylog(request):
+#  queryset = StudyTime.objects.filter(auth = request.user)
+#  query = request.GET['each_month_studylog']
+#  if query:
+#    querysets=queryset.filter(regist_date__startswith = query)
+#    if querysets.filter(regist_date =)
+#    return render(request,'content/home-after-login.html',{'queryset':querysets})
+#  else:
+#    return redirect('studyapp:home')
+###勉強時間(グラフ)###
 
-###勉強時間###
+
 ####タイマーの時間記録########
 def timer(request):
   if request.method == "POST":
@@ -200,7 +210,7 @@ def registsite_delete(request,delete_id):
 def registsite_edit(request,edit_id):
   usersites = Registsite.objects.filter(auth=request.user)
   registsite =get_object_or_404(usersites,id=edit_id)
-  return render(request,'content/regist_site_edit.html',{'reistsite':registsite})
+  return render(request,'content/regist_site_edit.html',{'registsite':registsite})
 
 #検索機能
 def registsite_search(request):

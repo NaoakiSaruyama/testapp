@@ -79,37 +79,43 @@
         if (stoptime == true) {
           stoptime = false;
           timerCycle();
-          $.cookie("hr",hr)
-          $.cookie("min",min)
-          $.cookie("sec",sec)
         }
-      }
-      var cookie_hr = $.cookie("hr")
-      var cookie_min = $.cookie("min")
-      var cookie_sec = $.cookie("sec")
-      if(cookie_hr){
-        hr = cookie_hr
-        $('#stopwatch').hr = hr
-      }
-      if(cookie_min){
-        min = cookie_min
-        $('#stopwatch').min = min
-      }
-      if(cookie_sec){
-        sec = cookie_sec
-        $('#stopwatch').sec = sec
       }
       function stopTimer() {
         if (stoptime == false) {
           stoptime = true;
             }
       }
+      var cookie_hr = $.cookie("hr")
+      var cookie_min = $.cookie("min")
+      var cookie_sec = $.cookie("sec")
+      if (cookie_hr < 10 || cookie_hr == 0) {
+        hr = '0' + parseInt(cookie_hr)
+      } else {
+        hr = parseInt(cookie_hr)
+      }
+      if (cookie_min < 10 || cookie_min == 0) {
+        min = '0' + parseInt(cookie_min)
+      } else {
+        min = parseInt(cookie_min)
+      }
+      if (cookie_sec < 10 || cookie_sec == 0) {
+        sec = '0' + parseInt(cookie_sec)
+      } else {
+        sec = parseInt(cookie_sec)
+      }
+      $('stopwatch').text = hr + ':' + min + ':' + sec
+
 
       function timerCycle() {
         if (stoptime == false) {
           sec = parseInt(sec);
           min = parseInt(min);
           hr = parseInt(hr);
+
+          $.cookie("hr", hr)
+          $.cookie("min", min)
+          $.cookie("sec", sec)
 
           sec = sec + 1;
 

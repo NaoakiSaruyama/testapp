@@ -18,7 +18,7 @@ urlpatterns=[
   path('studylog/',views.studytime,name='studylog'),
   path('registsite/',views.registsite,name='registsite'),
   path('registsite_search/',views.registsite_search,name="registsite_search"),
-  path('registsite/delete/<int:delete_id>',views.registsite_delete,name="delete_site"),
-  path('registsite/edit/<int:edit_id>',views.registsite_delete,name="edit_site"),
+  path('registsite/delete/<int:delete_id>/',views.registsite_delete,name="delete_site"),
+  path('registsite/edit/<int:edit_id>/',views.registsite_delete,name="edit_site"),
   path('registform',views.registform,name='registform')
 ]

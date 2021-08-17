@@ -94,21 +94,20 @@
         </tr>
         {% for content in contents %}
         <tr>
-          <td><a href="{{content.url}}">{{content.title}}</a></td>
+          <td><a href="{{content.url}}" class="post_usersite_title">{{content.title}}</a></td>
           <td>{{content.category}}</td>
           <td>
-            <form action="{% url 'studyapp:delete_site' content.id %}" method="POST">
+            <form action="{% url 'studyapp:delete_site' content.id %}" method="POST" class="delete_usrsite_form">
               {% csrf_token %}
               <button  class="delete_site_button" type="submit" onclick="return confirm('本当に削除しますか？');">
                 <i class="fa fa-trash-o" style="color:red;"></i>
               </button>
-            </form>
-            /
-            <form action="{% url 'studyapp:edit_site'%}" method="POST">
-              <button class="edit_site_button" type="submit">
+            </form>/
+            <button class="edit_site_button" type="submit" >
+              <a href="{% url 'studyapp:edit_site' content.pk %}" style="color: black;">
                 <i class="fa fa-edit"></i>
-              </button>
-            </form>
+              </a>
+            </button>
           </td>
         </tr>
         {% endfor %}

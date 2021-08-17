@@ -188,8 +188,8 @@ def registsite(request):
   ordered_object = some_object.order_by('-regist_date')
   return render(request,'content/RegistSite.html',{'contents':ordered_object})
 
-@require_POST
 #削除機能
+@require_POST
 def registsite_delete(request,delete_id):
   usersites =Registsite.objects.filter(auth=request.user)
   registsite = get_object_or_404(usersites,id=delete_id)
@@ -200,7 +200,7 @@ def registsite_delete(request,delete_id):
 def registsite_edit(request,edit_id):
   usersites = Registsite.objects.filter(auth=request.user)
   registsite =get_object_or_404(usersites,id=edit_id)
-  return render(request,'content/')
+  return render(request,'content/regist_site_edit.html',{'reistsite':registsite})
 
 #検索機能
 def registsite_search(request):

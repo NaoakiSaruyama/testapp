@@ -8,15 +8,15 @@
       {% csrf_token %}
       <div class="inputs">
         <label class="label">url</label>
-        <input class="input_form" type="url" name="url">
+        <input class="input_form" type="url" name="url" value="{{ reistsite.url }}">
       </div>
       <div class="inputs">
         <label class="label">サイト名</label>
-        <input class="input_form" type="text" name="name">
+        <input class="input_form" type="text" name="name" value="{{ registsite.title}}">
       </div>
       <div class="inputs">
         <label class="label">分類</label>
-        <input class="input_form" type="text" name="category">
+        <input class="input_form" type="text" name="category" value="{{ registsite.category}}">
       </div>
       <div class="btn-area">
         <input type="submit" value="送信">
@@ -25,3 +25,4 @@
     </form>
   </div>
 </body>
+

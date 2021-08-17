@@ -31,6 +31,10 @@ table th,table td{
   padding: 15px 0;
 }
 
+.delete_usrsite_form{
+  display: inline-block;
+}
+
 .delete_site_button{
   border: none;
   background-color:rgba(0,0,0,0) ;
@@ -39,4 +43,12 @@ table th,table td{
 .edit_site_button{
   border: none;
   background-color:rgba(0,0,0,0) ;
+}
+
+a.post_usersite_title:hover {
+  text-decoration: underline;
+}
+
+a{
+  text-decoration: none;
 }

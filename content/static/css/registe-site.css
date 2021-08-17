@@ -30,3 +30,13 @@ table th,table td{
   width: 25%;
   padding: 15px 0;
 }
+
+.delete_site_button{
+  border: none;
+  background-color:rgba(0,0,0,0) ;
+}
+
+.edit_site_button{
+  border: none;
+  background-color:rgba(0,0,0,0) ;
+}

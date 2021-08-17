@@ -1,5 +1,6 @@
 <head>
   <title>studyapp</title>
+  <script src="https://kit.fontawesome.com/330fa5bd85.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css"
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="./../../static/css/base.css">
@@ -97,7 +98,15 @@
             </div>
           </div>
           <div class="chart-wrapper" id="chart-bar">
-            <h1 class="bargraph-detail"></h1>
+            <h1 class="bargraph-detail">
+              <form action="" method="GET">
+              {% csrf_token %}
+                <input id="bargraph-detail-date" class="bargraph-detail-date" type="month">
+                <button class="bargraph-date-submit" type="submit">
+                  <i class="fas fa-sync" style="color: #FFF;"></i>
+                </button>
+              </form>
+            </h1>
             <ul class="vbroadcast-legend">
               <li class="total">学習時間</li>
             </ul>
@@ -111,11 +120,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script>
-    {
-      var date = new Date()
-      month = date.getMonth() + 1
-      document.getElementsByClassName("bargraph-detail")[0].innerText = month + "月"
-    }
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var mm = ("0"+(today.getMonth()+1)).slice(-2);
+    document.getElementById("bargraph-detail-date").value = yyyy + '年' + mm　+ '月'
     $(".wrapper").delay(500).fadeIn(450);
       var barDataset = [
         {

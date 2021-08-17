@@ -1,5 +1,5 @@
 from django.contrib.auth import logout, views
-from content.views import Login, Logout,pass_for_changepassword,password_reset_done,CreateNewPassword, timer#delete
+from content.views import Login, Logout,pass_for_changepassword,password_reset_done,CreateNewPassword
 from django.urls import path
 from django.urls.resolvers import URLPattern
 from . import views
@@ -17,7 +17,8 @@ urlpatterns=[
   path('timer/',views.timer,name='timer'),
   path('studylog/',views.studytime,name='studylog'),
   path('registsite/',views.registsite,name='registsite'),
+  path('registsite_search/',views.registsite_search,name="registsite_search"),
   path('registsite/delete/<int:delete_id>',views.registsite_delete,name="delete_site"),
-  #path('registsite/<str:query>',views.registsite_search,name="registsite_search"),
+  path('registsite/edit/<int:edit_id>',views.registsite_delete,name="edit_site"),
   path('registform',views.registform,name='registform')
 ]

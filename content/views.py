@@ -184,32 +184,35 @@ def registform(request):
     return render(request,'content/regist-site-form.html')
 #登録サイトの出力
 def registsite(request):
-  some_object=Registsite.objects.filter(auth=request.user)
-  return render(request,'content/RegistSite.html',{'contents':some_object})
+  some_object = Registsite.objects.filter(auth=request.user)
+  ordered_object = some_object.order_by('-regist_date')
+  return render(request,'content/RegistSite.html',{'contents':ordered_object})
 
 @require_POST
 #削除機能
 def registsite_delete(request,delete_id):
-  user =Registsite.objects.filter(auth=request.usr)
-  registsite = get_object_or_404(user,id=delete_id)
+  usersites =Registsite.objects.filter(auth=request.user)
+  registsite = get_object_or_404(usersites,id=delete_id)
   registsite.delete()
-  return redirect('studyapp/registsite')
+  return redirect('studyapp:registsite')
 
+#編集機能
+def registsite_edit(request,edit_id):
+  usersites = Registsite.objects.filter(auth=request.user)
+  registsite =get_object_or_404(usersites,id=edit_id)
+  return render(request,'content/')
 
 #検索機能
-#def registsite_search(request):
-#  if  request.method == "GET":
-#    queryset = Registsite.objects.order_by('-regist_date')
-#    query = request.GET['search']
-#    if query:
-#      querysets = queryset.filter(
-#        Q(title__icontains = query)|Q(category__icontains = query)
-#      )
-#    return render(request,'content/RegistSite.html',{'q':querysets})
-#  else:
-#    return render(request,'content/RegistSite.html')
-
-
+def registsite_search(request):
+  if  request.method == "GET":
+    auth_site = Registsite.objects.filter(auth=request.user)
+    queryset = auth_site.order_by('-regist_date')
+    query = request.GET['search']
+    if query:
+      queryset = queryset.filter(
+        Q(title__icontains = query)|Q(category__icontains = query)
+    )
+    return render(request,'content/RegistSite.html',{'contents':queryset})
+  else:
+    return render(request,'content/RegistSite.html')
 #####登録フォーム#######
-
-

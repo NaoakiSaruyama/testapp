@@ -1,5 +1,7 @@
 import datetime
+import calendar
 from django.contrib import auth
+from django.core import paginator
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.views import LoginView
 from django.conf.urls import url
@@ -18,7 +20,7 @@ from django.db.models import Sum, query
 from .forms import EmailAuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-
+from django.core.paginator import Page, Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 #####ログイン#######
@@ -151,15 +153,41 @@ def print_studytime(request):
 ####勉強時間の出力終了########
 
 ###勉強時間(グラフ)###
-#def each_month_studylog(request):
-#  queryset = StudyTime.objects.filter(auth = request.user)
-#  query = request.GET['each_month_studylog']
-#  if query:
-#    querysets=queryset.filter(regist_date__startswith = query)
-#    if querysets.filter(regist_date =)
-#    return render(request,'content/home-after-login.html',{'queryset':querysets})
-#  else:
-#    return redirect('studyapp:home')
+def each_month_studylog(request):
+  if request.method == "GET":
+    queryset = StudyTime.objects.filter(auth = request.user)
+    query = request.GET['each_month_studylog']
+    #datetimeの型にデータを変更
+    time =datetime.datetime.strptime(query,'%Y%m')
+    #月の初日と次の最終日
+    month_first_day=datetime.date(time.year,time.month,1)
+    month_end_day = time.replace(day=calendar.monthrange(time.year,time.month)[1])
+
+    day = month_first_day
+
+    days={}
+    while day <= month_end_day:
+      day +=  datetime.timedelta(days=1)
+      days['time']=day
+
+    if query:
+      #日付がある場合
+      querysets=queryset.filter(regist_date__startswith = query)
+      #値がデータベースにないものを抽出(日付すべて(days)-queryの日付(querysets)) →　データベースの再構築
+      for day in days:
+        some__data = querysets.filter(regist_date__date =  day )
+        if some__data is None:
+          querysets =querysets.create(
+            auth = request.user,
+            time = 0,
+            regist_date = day,
+          )
+        else:
+          querysets = some__data.aggregate(Sum('time'))
+      return render(request,'content/home-after-login.html',{'queryset':querysets})
+    else:
+      return redirect('studyapp:home')
+  return render(request,'content/home-after-login.html')
 ###勉強時間(グラフ)###
 
 
@@ -192,11 +220,24 @@ def registform(request):
     return redirect('studyapp:registsite')
   else:
     return render(request,'content/regist-site-form.html')
-#登録サイトの出力
+
+###登録サイトの出力###
 def registsite(request):
   some_object = Registsite.objects.filter(auth=request.user)
   ordered_object = some_object.order_by('-regist_date')
-  return render(request,'content/RegistSite.html',{'contents':ordered_object})
+  #ページネーション
+  paginator = Paginator(ordered_object,6)
+  page = request.Get.get('page',1)
+  try:
+    pages =paginator.page(page)
+  except PageNotAnInteger:
+    pages = paginator.page(1)
+  except EmptyPage:
+    pages = paginator.page(1)
+
+  return render(request,'content/RegistSite.html',{'contents':ordered_object, 'pages': pages})
+
+
 
 #削除機能
 @require_POST

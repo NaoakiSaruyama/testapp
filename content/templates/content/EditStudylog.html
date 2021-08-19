@@ -1,0 +1,56 @@
+<head>
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./../../static/css/edit_studylog.css">
+</head>
+
+
+{% extends 'content/base.html' %}
+<body>
+  <!--ユーザーの要録サイト-->
+  <div class="location">
+    <ul id="nav">
+      <li style="border-radius: 10px 0px 0px 10px;"><a href="{% url 'studyapp:studylog' %}">追加</a></li>
+      <li style="border-radius: 0px 10px 10px 0px;"><a href="#">編集</a></li>
+      <li>
+        <button class="change_edit_studylog_date">
+          <input type="date">
+        </button>
+      </li>
+    </ul>
+    <div class="registe-site-style">
+      <table id="registe-site-table">
+        <tr>
+          <th>サイト名&url</th>
+          <th>ジャンル</th>
+          <th>削除/編集</th>
+        </tr>
+        {% for content in contents %}
+        <tr>
+          <td><a href="{{content.url}}" class="post_usersite_title">{{content.title}}</a></td>
+          <td>{{content.category}}</td>
+          <td>
+            <form action="{% url 'studyapp:delete_site' content.id %}" method="POST" class="delete_usrsite_form">
+              {% csrf_token %}
+              <button class="delete_site_button" type="submit" onclick="return confirm('本当に削除しますか？');">
+                <i class="fa fa-trash-o" style="color:red;"></i>
+              </button>
+            </form>/
+            <button class="edit_site_button" type="submit">
+              <a href="{% url 'studyapp:edit_site' content.id %}" style="color: black;">
+                <i class="fa fa-edit"></i>
+              </a>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="btn-area">
+      <button style="background-color: rgba(0,0,0,0); border: none;">
+        <a href="{% url 'studyapp:home %}"></a>
+        <input style="background-color: #cbcccb;" type="submit" value="戻る">
+      </button>
+    </div>
+  </div>
+{% endblock %}
+</body>

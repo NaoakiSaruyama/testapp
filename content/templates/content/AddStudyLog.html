@@ -4,6 +4,10 @@
 
 <body>
   <div class="location">
+    <ul id="nav">
+      <li style="border-radius: 10px 0px 0px 10px;"><a href="{% url 'studyapp:studylog'%}">追加</a></li>
+      <li style="border-radius: 0px 10px 10px 0px;"><a href="#">編集</a></li>
+    </ul>
     <form action="" method="POST">
       {% csrf_token%}
       <div class="inputs">
@@ -20,7 +24,10 @@
       </div>
       <div class="btn-area">
         <input type="submit" value="送信">
-        <input type="submit" value="戻る">
+        <button style="background-color: rgba(0,0,0,0); border: none;">
+          <a href="{% url 'studyapp:home %}"></a>
+          <input style="background-color: #cbcccb;" type="submit" value="戻る">
+        </button>
       </div>
     </form>
   </div>

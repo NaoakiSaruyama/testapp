@@ -20,5 +20,5 @@ urlpatterns=[
   path('registsite_search/',views.registsite_search,name="registsite_search"),
   path('registsite/delete/<int:delete_id>',views.registsite_delete,name="delete_site"),
   path('registsite/edit/<int:edit_id>',views.registsite_edit,name="edit_site"),
-  path('registform',views.registform,name='registform')
+  path('registform',views.registform,name='registform'),
 ]

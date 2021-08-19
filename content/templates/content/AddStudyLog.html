@@ -20,16 +20,16 @@
       </div>
       <div class="inputs">
         <label class="label">学習時間(分)</label>
-        <input class="input_form" required="required" type="number" name="time">
+        <input class="input_form"  type="number" name="time">
       </div>
       <div class="btn-area">
         <input type="submit" value="送信">
-        <button style="background-color: rgba(0,0,0,0); border: none;">
-          <a href="{% url 'studyapp:home %}"></a>
-          <input style="background-color: #cbcccb;" type="submit" value="戻る">
-        </button>
       </div>
-    </form>
+      <button class="return_home">
+        <a href="{% url 'studyapp:home' %}"></a>
+        <input style="background-color: #cbcccb;" type="submit" value="戻る">
+      </button>
+    </form>'
   </div>
 
   <script>

@@ -49,7 +49,7 @@ form{
 	float: left;
 	width:300px;
 }
-input[type="url"],
+input[type="date"],
 input[type="text"],
 input[type="number"],
 textarea{
@@ -73,4 +73,9 @@ input[type="submit"]{
 	padding: 10px 20px;
 	margin: 0 10px;
 	border-radius: 10px;
+}
+
+.return_home{
+	background-color: rgba(0,0,0,0);
+	border: none;
 }

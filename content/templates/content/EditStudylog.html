@@ -6,16 +6,15 @@
 </head>
 
 
-{% extends 'content/base.html' %}
 <body>
   <!--ユーザーの要録サイト-->
   <div class="location">
     <ul id="nav">
       <li style="border-radius: 10px 0px 0px 10px;"><a href="{% url 'studyapp:studylog' %}">追加</a></li>
-      <li style="border-radius: 0px 10px 10px 0px;"><a href="{% url %}">編集</a></li>
+      <li style="border-radius: 0px 10px 10px 0px;"><a href="{% url 'studyapp:edit_studylog'%}">編集</a></li>
       <li style="background-color:#fff; padding-left: 30%;">
         <form class="search_regist_date" action="" method="GET">
-          <input class="select_date" type="date">
+          <input id="select_date" class="select_date" type="date" name="search" value="{{ request.GET.search }}">
           <button class="bargraph-date-submit" type="submit" style="background-color: rgba(0,0,0,0); border: none;">
             <i class="fas fa-sync" style="color:#000;"></i>
           </button>
@@ -29,19 +28,19 @@
           <th>勉強時間</th>
           <th>削除/編集</th>
         </tr>
-        {% for content in contents %}
+        {% for object in objects %}
         <tr>
-          <td>{{content.title}}</td>
-          <td>{{content.category}}</td>
+          <td>{{object.categoru}}</td>
+          <td>{{object.time}}</td>
           <td>
-            <form action="{% url 'studyapp:delete_site' content.id %}" method="POST" class="delete_usrsite_form">
+            <form action="{% url 'studyapp:delete_studylog' object.id %}" method="POST" class="delete_usrsite_form">
               {% csrf_token %}
               <button class="delete_site_button" type="submit" onclick="return confirm('本当に削除しますか？');">
                 <i class="fa fa-trash-o" style="color:red;"></i>
               </button>
             </form>/
             <button class="edit_site_button" type="submit">
-              <a href="{% url 'studyapp:edit_site' content.id %}" style="color: black;">
+              <a href="{% url 'studyapp:edit_each_studylog' object.id %}" style="color: black;">
                 <i class="fa fa-edit"></i>
               </a>
             </button>
@@ -57,5 +56,12 @@
       </button>
     </div>
   </div>
-{% endblock %}
+  <script>
+    var today = new Date();
+    today.setDate(today.getDate());
+    var yyyy = today.getFullYear();
+    var mm = ("0" + (today.getMonth() + 1)).slice(-2);
+    var dd = ("0"+ (today.getDay())).slice(-2);
+    document.getElementById("select_date").value = yyyy + '-' + mm + '-' + dd;
+  </script>
 </body>

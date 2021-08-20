@@ -113,6 +113,42 @@ def studytime(request):
     return render(request,'content/AddStudyLog.html')
 #####勉強時間の記録終了#########
 
+#####勉強時間の編集(検索前)#####
+def edit_studylog(request):
+  objects = StudyTime.objects.filter(regist_date__date = datetime.date.today())
+  return render(request,'content/EditStudylog.html',{'objects':objects})
+
+####勉強時間の編集(検索後)########
+def after_search_edit_studylog(requerst):
+  if requerst.method == "GET":
+    queryset = StudyTime.objects.filter(auth = requerst.user)
+    query = requerst.GET['search']
+    if query:
+      queryset =  queryset.filter(regist_date_startswhich = query)
+    return render(requerst,'content/EditStudylog.html',{'objects':queryset})
+  else:
+    return redirect('studyapp:edit_studylog')
+
+##削除機能####
+@require_POST
+def delete_studylog(request,delete_studylog_id):
+  studylog = StudyTime.objects.filter(auth = request.user)
+  delete_studylog = get_object_or_404(studylog,id = delete_studylog_id)
+  delete_studylog.delete()
+  return redirect('studyapp:edit_studylog')
+
+
+###詳細編集機能####
+def edit_each_studylog(request,edit_each_studylog_id):
+  studylog = StudyTime.objects.filter(auth = request.user)
+  edit_studylog = get_object_or_404(studylog,id = edit_each_studylog_id)
+  return render(request,'content/EditEachStudylog',{'studylog':edit_studylog})
+
+####編集後再登録####
+#def change_studylog(request):
+#  if request.method == "POST":
+
+
 #####勉強時間の出力###########
 @login_required
 def print_studytime(request):

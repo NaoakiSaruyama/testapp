@@ -118,7 +118,7 @@
   <nav aria-label="Page navigation example">
     <ul class="pagination">
       ｛% if pages.has_previous %｝
-      <li><a class="page-link text-primary d-inline-block" href="?page=｛｛ pages.previous_page_number ｝｝"></a></li>
+      <li><a class="page-link text-primary d-inline-block" href="?page=｛｛ pages.previous_page_number ｝｝{% if request.GET.page %}&page={{ request.GET.qpage}}{% endif %}"></a></li>
       ｛% else %｝
       <li class="disabled">
         <div class="page-link text-secondary d-inline-block disabled" href="#"></div></div>
@@ -133,7 +133,7 @@
           </li>
           {% else %}
           <li class="disabled">
-            <div class="page-link text-secondary d-inline-block disabled" href="?page={{ pages.page_num }}"></div>
+            <div class="page-link text-secondary d-inline-block disabled" href="?page={{ pages.page_num }}{% if request.GET.page %}&page={{ request.GET.page }}{% endif %}"></div>
           </li>
           {% endif %}
         {% else %}
@@ -142,7 +142,7 @@
       {% endfor %｝
 
       {% if page.has_next %}
-        <li><div class="page-link text-secondary d-inline-block disabled" href="?page={{ pages.next_page_number }}"></div></li>
+        <li><div class="page-link text-secondary d-inline-block disabled" href="?page={{ pages.next_page_number }}{% if request.GET.page %}&page={{ request.GET.page }}{% endif %}"></div></li>
       {% else %}
         <li class="disabled"><a class="page-link text-secondary d-inline-block text-muted" href="#"></a></li>
       {% endif %}

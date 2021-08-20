@@ -12,32 +12,23 @@
       {% csrf_token%}
       <div class="inputs">
         <label class="label">日付</label>
-        <input id="today" class="input_form" type="date" name="date" required="required">
+        <input id="today" class="input_form" type="date" name="date" required="required" value="{{studylog.regist_date}}">
       </div>
       <div class="inputs">
         <label class="label">分類</label>
-        <input class="input_form" type="text" name="category">
+        <input class="input_form" type="text" name="category" value="{{studylog.category}}">
       </div>
       <div class="inputs">
         <label class="label">学習時間(分)</label>
-        <input class="input_form"  type="number" name="time">
+        <input class="input_form" type="number" name="time" value="{{studylog.time}}">
       </div>
       <div class="btn-area">
-        <input type="submit" value="送信">
+        <input type="submit" value="再登録">
         <button class="return_home">
-          <a href="{% url 'studyapp:home' %}"></a>
+          <a href="{% url 'studyapp:edit_studylog' %}"></a>
           <input style="background-color: #cbcccb;" type="submit" value="戻る">
         </button>
       </div>
     </form>'
   </div>
-
-  <script>
-    var today = new Date();
-    today.setDate(today.getDate());
-    var yyyy = today.getFullYear();
-    var mm = ("0" + (today.getMonth() + 1)).slice(-2);
-    var dd = ("0" + today.getDate()).slice(-2);
-    document.getElementById("today").value = yyyy + '-' + mm + '-' + dd;
-  </script>
 </body>

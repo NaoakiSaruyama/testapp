@@ -72,7 +72,12 @@
   </div>
 </div>
 <!--学習ログタイトル，ボタン　おわり-->
-
+<!--切り替えボタン-->
+<ul id="nav">
+  <li><a href="#">全体</a></li>
+  <li><a href="#">詳細</a></li>
+</ul>
+<!--切り替えボタン終了-->
 <!--棒グラフ1-->
 <div class="bargraph-one-location">
   <div class="bargraph-one-style">
@@ -100,7 +105,7 @@
           <h1 class="bargraph-detail">
             <form action="" method="GET">
             {% csrf_token %}
-              <input id="bargraph-detail-date" class="bargraph-detail-date" type="month" name="each_month_studylog" value="{{ request.GET.each_month_studylog }}">
+              <input id="bargraph-detail-date" class="bargraph-detail-date" required="required" type="month" name="each_month_studylog" value="{{ request.GET.each_month_studylog }}">
               <button class="bargraph-date-submit" type="submit">
                 <i class="fas fa-sync" style="color: #FFF;"></i>
               </button>

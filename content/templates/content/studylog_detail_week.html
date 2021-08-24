@@ -1,0 +1,138 @@
+<head>
+  <title>studyapp</title>
+  <script src="https://kit.fontawesome.com/330fa5bd85.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="./../../static/css/base.css">
+  <link rel="stylesheet" href="./../../static/css/compare_graph.css">
+  <link rel="stylesheet" href="./../../static/css/tab.css">
+  <style>
+    .studylog-name {
+      position: absolute;
+      left: 284px;
+    }
+
+    .button-addstudylog-location {
+      position: absolute;
+      right: 16px;
+      width: 100vw;
+    }
+
+    .bargraph-one-location {
+      position: absolute;
+      top: 93px;
+      left: 284px;
+      width: calc(100% - 284px);
+    }
+
+
+    /*配置終わり*/
+
+    /*学習ログデザイン　初め*/
+
+    .button-addstudylog {
+      position: absolute;
+      top: 10px;
+      right: 30px;
+      width: 160px;
+      height: 32px;
+      padding: 7px 20px;
+      font-size: 12;
+      text-align: center;
+      border-radius: 25px;
+      text-decoration: none;
+      color: #FFF;
+      background-color: #ff96a3;
+    }
+
+    .studylog-name {
+      display: inline-block;
+      font-size: 16px;
+      height: 57px;
+      text-align: center;
+      font: normal normal normal 40px/53px Segoe UI;
+      letter-spacing: 0px;
+      color: #000000;
+      opacity: 1;
+    }
+
+    .studylog-name span {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .bargraph-one-style{
+      width: 80%;
+      border: #FFF;
+      margin:auto;
+    }
+  </style>
+</head>
+{% extends 'content/base.html' %}
+
+{% block content %}
+<!--学習ログタイトル，ボタン-->
+<div class="studylogs-location">
+  <div class="studylog-name"><span>学習ログ</span></div>
+  <div class="button-addstudylog-location">
+    <a href="{%url 'studyapp:studylog' %}" class="button-addstudylog">学習ログ追加＋</a>
+  </div>
+</div>
+<!--学習ログタイトル，ボタン　おわり-->
+<!--棒グラフ1-->
+<div class="bargraph-one-location">
+  <div class="bargraph-one-style">
+    <!--切り替えボタン-->
+    <ul id="nav" style="display: block;">
+      <li class="left">
+        <ul class="nav1" style="padding-left: 0px;">
+          <li style="border-radius:10px 0px 0px 10px; "><a href="{% url 'studyapp:home' %}">全体</a></li>
+          <li style="border-radius:0px 10px 10px 0px;"><a href="#">詳細</a></li>
+        </ul>
+      </li>
+      <li class="right">
+        <ul class="nav2">
+          <li style="border-radius:10px 0px 0px 10px;"><a href="#">合計</a></li>
+          <li><a href="#">年</a></li>
+          <li><a href="#">月</a></li>
+          <li style="border-radius:0px 10px 10px 0px;"><a href="#">日</a></li>
+        </ul>
+      </li>
+    </ul>
+    <!--切り替えボタン終了-->
+    <div class="ub-bar-graph__location">
+      <div class="ub-bar-graph">
+        <form  action="">
+          <input class="ub-bar-graph__date" type="week">
+          <button class="bargraph-date-submit" type="submit">
+            <i class="fas fa-sync" style="color: #FFF;"></i>
+          </button>
+        </form>
+        <p class="ub-bar-graph__title">合計時間</p>
+        <dl>
+          <div>
+            <dt class="ub-bar-graph__em" style="width:100%;">
+              <span class="ub-bar-graph__content">全体合計</span>
+            </dt>
+            <dd>
+              <span class="ub-bar-graph__value">{{total}}分</span>
+            </dd>
+          </div>
+          {% for item in items %}
+            <div>
+              <dt style="width:{{item.width}}%;">
+                <span class="ub-bar-graph__content">{{item.category}}</span>
+              </dt>
+              <dd>
+                <span class="ub-bar-graph__value">{{item.time}}分</span>
+              </dd>
+            </div>
+          {% endfor %}
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+<!--棒グラフ1　おわり-->
+
+{% endblock %}

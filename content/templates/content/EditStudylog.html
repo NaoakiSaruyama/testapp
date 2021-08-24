@@ -12,7 +12,7 @@
     <ul id="nav">
       <li style="border-radius: 10px 0px 0px 10px;"><a href="{% url 'studyapp:studylog' %}">追加</a></li>
       <li style="border-radius: 0px 10px 10px 0px;"><a href="{% url 'studyapp:edit_studylog'%}">編集</a></li>
-      <li style="background-color:#fff; padding-left: 30%;">
+      <li style="background-color:#fff; padding-left: 40%; padding-right: 0%;">
         <form class="search_regist_date" action="" method="GET">
           <input id="select_date" class="select_date" type="date" name="search" value="{{ request.GET.search }}">
           <button class="bargraph-date-submit" type="submit" style="background-color: rgba(0,0,0,0); border: none;">
@@ -30,7 +30,7 @@
         </tr>
         {% for object in objects %}
         <tr>
-          <td>{{object.categoru}}</td>
+          <td>{{object.category}}</td>
           <td>{{object.time}}</td>
           <td>
             <form action="{% url 'studyapp:delete_studylog' object.id %}" method="POST" class="delete_usrsite_form">
@@ -48,12 +48,12 @@
         </tr>
         {% endfor %}
       </table>
-    </div>
-    <div class="btn-area">
-      <button style="background-color: rgba(0,0,0,0); border: none;">
-        <a href="{% url 'studyapp:home %}"></a>
-        <input style="background-color: #cbcccb;" type="submit" value="戻る">
-      </button>
+      <div class="btn-area">
+        <button style="background-color: rgba(0,0,0,0); border: none;">
+          <a href="{% url 'studyapp:home' %}"></a>
+          <input style="background-color: #cbcccb;" type="submit" value="戻る">
+        </button>
+      </div>
     </div>
   </div>
   <script>

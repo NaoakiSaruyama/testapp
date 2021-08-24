@@ -3,6 +3,7 @@
   top: 40%;
   left: 55%;
   transform: translate(-50%, -50%);
+  width: 60%;
 }
 
 .search_regist_date{
@@ -103,7 +104,7 @@ a{
 
 .btn-area{
   position: absolute;
-  left: 35%;
+  text-align: center;
 }
 
 input[type="submit"]{

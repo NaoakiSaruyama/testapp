@@ -293,10 +293,6 @@ label {
   display: inline-block;
 }
 
-button:focus {
-  outline: dotted 1px;
-  outline: -webkit-focus-ring-color auto 5px;
-}
 
 button,
 select {

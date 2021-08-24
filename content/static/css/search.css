@@ -1,12 +1,9 @@
 .search_container{
   position: relative;
   box-sizing: border-box;
-  display: inline-block;
   padding: 3px 10px;
   border-radius: 20px;
-  top: 104px;
-  margin-left: 76%;
-  margin-right: 200px;
+  margin:0 0 8px auto;
   height: 2.2em;
   width: 160px;
   overflow: hidden;

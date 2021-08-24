@@ -52,6 +52,7 @@ form{
 input[type="date"],
 input[type="text"],
 input[type="number"],
+input[type="url"],
 textarea{
 	border: solid 1px #e0e0e0;
 	border-radius:5px;
@@ -73,6 +74,21 @@ input[type="submit"]{
 	padding: 10px 20px;
 	margin: 0 10px;
 	border-radius: 10px;
+}
+
+.return{
+	display: inline-block;
+	background: #cbcccb;
+	font-size:15px;
+	font-weight:bold;
+	padding: 10px 20px;
+	margin: 0 10px;
+	border-radius: 10px;
+}
+
+.return_link{
+	text-decoration: none;
+	color: #fff;
 }
 
 .return_home{

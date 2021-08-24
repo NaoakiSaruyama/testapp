@@ -1,0 +1,81 @@
+.bargraph-one-style{
+  font: normal 14px/1.5 "Overpass", sans-serif;
+}
+
+
+.ub-bar-graph{
+  margin:0 auto 2rem !important;
+  padding:2em !important;
+  box-shadow: 0 3px 5px rgba(0,0,0,.07);
+  color: #333;
+  display: block;
+  margin: auto;
+}
+.ub-bar-graph__date{
+  display: inline-block;
+  background-color: rgba(0,0,0,0);
+  border: none;
+  color: black;
+  font: bold;
+}
+.ub-bar-graph__title{
+  letter-spacing: 1.5px !important;
+  line-height:1.8 !important;
+  font-size: 1em  !important;
+  margin: 0 auto 2.5em !important;
+  padding: 5px 0 !important;
+  border-bottom: 1px dashed #aaa;
+  text-align:center;
+  font-weight:600 !important;
+}
+.ub-bar-graph dl > div{
+  margin: 0 auto 2.5em !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 30px;
+  font-size: 0.9rem;
+  position:relative;
+  box-shadow: 0 3px 5px rgba(0,0,0,.03);
+}
+.ub-bar-graph dl > div:last-child{
+  margin: 0 !important;
+}
+.ub-bar-graph dl > div dt{
+  background:#fbd366;
+  border-right: 2px solid #fff;
+}
+.ub-bar-graph dl > div .ub-bar-graph__em{
+  background:#6cd2d8;
+}
+.ub-bar-graph dl > div dd{
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex:1;
+  margin:0 !important;
+  font-size:1em;
+  background:#dfe6e8;
+}
+.ub-bar-graph dl > div dt > span,.ub-bar-graph dl > div dd > span{
+  position:absolute;
+  z-index: 1;
+  color:#333;
+  font-size: 1em;
+  line-height: 1.5;
+}
+.ub-bar-graph dl > div dt > .ub-bar-graph__content{
+  left:0px;
+  top:-20px;
+}
+.ub-bar-graph dl > div dd >  .ub-bar-graph__value{
+  right:5px;
+  top:5px;
+}
+@media screen and (max-width: 560px) {
+  .ub-bar-graph{
+    padding:2em 1em !important;
+  }
+  .ub-bar-graph dl > div{
+    margin: 0 auto 2em !important;
+  }
+}

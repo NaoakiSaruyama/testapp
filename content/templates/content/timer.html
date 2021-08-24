@@ -20,7 +20,7 @@
         <li><button class="timerbutton" onclick="stopTimer()">Stop</button></li>
         <li><button class="timerbutton" onclick="resetTimer()">Reset</button></li>
         <li>
-          <button class="timerbutton" onclick="registTimer()" type="button" class="regist_time" data-target="#myModal" data-toggle="modal">Regist</button>
+          <button class="timerbutton" onclick="registTimer()" type="button" data-target="#myModal" data-toggle="modal">Regist</button>
         </li>
       </ul>
     </div>
@@ -61,9 +61,6 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"
-    integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -79,32 +76,51 @@
         if (stoptime == true) {
           stoptime = false;
           timerCycle();
+
+          localStorage.setItem('startDate',new Date())
         }
       }
       function stopTimer() {
         if (stoptime == false) {
           stoptime = true;
+
+          localStorage.removeItem('startDate')
             }
       }
-      var cookie_hr = $.cookie("hr")
-      var cookie_min = $.cookie("min")
-      var cookie_sec = $.cookie("sec")
-      if (cookie_hr < 10 || cookie_hr == 0) {
-        hr = '0' + parseInt(cookie_hr)
-      } else {
-        hr = parseInt(cookie_hr)
+　　　//ローカルストレージ読み込み
+      var startDate = localStorage.getItem('startDate');
+      var diffSec = 0
+
+      if(startDate !=null ){
+        stoptime =false
+        setTimeout("timerCycle()",1000)
+
+        var startDate = new Date(startDate)
+        var nowDate = new Date();
+
+        diffSec = parseInt((nowDate-startDate)/1000);
       }
-      if (cookie_min < 10 || cookie_min == 0) {
-        min = '0' + parseInt(cookie_min)
-      } else {
-        min = parseInt(cookie_min)
-      }
-      if (cookie_sec < 10 || cookie_sec == 0) {
-        sec = '0' + parseInt(cookie_sec)
-      } else {
-        sec = parseInt(cookie_sec)
-      }
-      timer.innerHTML= hr + ':' + min + ':' + sec
+
+      var num_hr = diffSec / 3600 | 0;
+      var num_min = diffSec % 3600 / 60 | 0;
+      var num_sec = diffSec % 60;
+
+      if (num_hr < 10 || num_hr == 0) {
+          hr = '0' + parseInt(num_hr)
+        } else {
+          hr = parseInt(num_hr)
+        }
+        if (num_min < 10 || num_min == 0) {
+          min = '0' + parseInt(num_min)
+        } else {
+          min = parseInt(num_min)
+        }
+        if (num_sec < 10 || num_sec == 0) {
+          sec = '0' + parseInt(num_sec)
+        } else {
+          sec = parseInt(num_sec)
+        }
+        timer.innerHTML = hr + ':' + min + ':' + sec
 
       function timerCycle() {
         if (stoptime == false) {
@@ -133,10 +149,10 @@
           if (hr < 10 || hr == 0) {
             hr = '0' + hr;
           }
-
-          $.cookie("hr", hr)
-          $.cookie("min", min)
-          $.cookie("sec", sec)
+          //ローカルストレージに保存
+          localStorage.setItem('hr',hr)
+          localStorage.setItem('min',min)
+          localStorage.setItem('sec',sec)
 
           timer.innerHTML = hr + ':' + min + ':' + sec;
 
@@ -145,6 +161,7 @@
       }
 
       function resetTimer() {
+        localStorage.removeItem('startDate')
         timer.innerHTML = '00:00:00';
         stoptime = true;
         hr = 0;
@@ -162,6 +179,7 @@
           var dd = ("0" + today.getDate()).slice(-2);
           document.getElementById("today").value = yyyy + '-' + mm + '-' + dd;
         })
+        localStorage.removeItem('startDate')
         timer.innerHTML = '00:00:00';
         stoptime = true;
         hr = 0;

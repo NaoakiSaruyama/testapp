@@ -1,10 +1,15 @@
+from django.db.models.query_utils import DeferredAttribute
+import content
 import datetime
 import calendar
+import math
+import json
 from django.contrib import auth
 from django.core import paginator
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.views import LoginView
 from django.conf.urls import url
+from django.db.models.aggregates import Count
 from django.http.response import HttpResponse
 from .models import Userdata,StudyTime,Registsite
 from django.http import request
@@ -124,7 +129,7 @@ def after_search_edit_studylog(requerst):
     queryset = StudyTime.objects.filter(auth = requerst.user)
     query = requerst.GET['search']
     if query:
-      queryset =  queryset.filter(regist_date_startswhich = query)
+      queryset =  queryset.filter(regist_date__date = query)
     return render(requerst,'content/EditStudylog.html',{'objects':queryset})
   else:
     return redirect('studyapp:edit_studylog')
@@ -143,11 +148,6 @@ def edit_each_studylog(request,edit_each_studylog_id):
   studylog = StudyTime.objects.filter(auth = request.user)
   edit_studylog = get_object_or_404(studylog,id = edit_each_studylog_id)
   return render(request,'content/EditEachStudylog',{'studylog':edit_studylog})
-
-####編集後再登録####
-#def change_studylog(request):
-#  if request.method == "POST":
-
 
 #####勉強時間の出力###########
 @login_required
@@ -179,52 +179,317 @@ def print_studytime(request):
   if daily_time['time__sum'] is None:
     daily_time['time__sum']=0
 
+  #グラフの出力
+  user_data = StudyTime.objects.filter(auth = request.user)
+
+  today = datetime.date.today()
+  this_month_first_day = today.replace(day = 1)
+  this_month_end_day =today.replace(day = calendar.monthrange(today.year,today.month)[1])
+
+  day = this_month_first_day
+
+  days={}
+
+  while day <= this_month_end_day:
+    this_month_data = user_data.filter(regist_date__date = day)
+    if not len(this_month_data):
+      days[f"{day}"] = {"date":day.day,"total":0}
+    else:
+      days[f"{day}"]={"date":day.day,"total":this_month_data.aggregate(Sum('time'))['time__sum']}
+
+    day +=  datetime.timedelta(days=1)
+
+    date =today.strftime('%Y-%m')
+
 
   contents = {
     'time':total_time['time__sum'], #合計
     'week_time':weekly_time['time__sum'], #今週の合計
     'today_time':daily_time['time__sum'], #今日の合計
+    'querysets':json.dumps(days),
+    'date':date
     }
-  return render(request,'content/home-after-login.html',contents)
-####勉強時間の出力終了########
 
-###勉強時間(グラフ)###
-def each_month_studylog(request):
+  return render(request,'content/home-after-login.html',contents)
+
+#検索後
+def each_month_studylog_search(request):
+  #検索後
+  total_object=StudyTime.objects.filter(auth=request.user)
+
+  today=datetime.date.today()
+  #今日の勉強レコードの抽出
+  daily_object = total_object.filter(regist_date__date=today)
+
+  # 週の勉強登録レコードを抽出
+  week_monday = today - datetime.timedelta(days=today.isoweekday() + 1)
+  week_sunday = week_monday+datetime.timedelta(days=6)
+  weekly_object = total_object.filter(regist_date__range=[week_monday,week_sunday])
+
+  # 週の合計時間を計算
+  weekly_time = weekly_object.aggregate(Sum('time'))
+  #weeklyとtimerweeklyを一時代入してNoneかどうかをチェックする
+  if weekly_time['time__sum'] is None:
+    weekly_time['time__sum']=0
+
+  # 総学習時間
+  total_time = total_object.aggregate(Sum('time'))
+  if total_time['time__sum'] is None:
+    total_time['time__sum']=0
+
+  #今日の学習時間
+  daily_time = daily_object.aggregate(Sum('time'))
+  if daily_time['time__sum'] is None:
+    daily_time['time__sum']=0
+  #グラフ
   if request.method == "GET":
     queryset = StudyTime.objects.filter(auth = request.user)
-    query = request.GET['each_month_studylog']
-    #datetimeの型にデータを変更
-    time =datetime.datetime.strptime(query,'%Y%m')
-    #月の初日と次の最終日
-    month_first_day=datetime.date(time.year,time.month,1)
-    month_end_day = time.replace(day=calendar.monthrange(time.year,time.month)[1])
-
-    day = month_first_day
-
-    days={}
-    while day <= month_end_day:
-      day +=  datetime.timedelta(days=1)
-      days['time']=day
+    query = request.GET.get('each_month_studylog')
+    str_query = str(query)
 
     if query:
-      #日付がある場合
-      querysets=queryset.filter(regist_date__startswith = query)
-      #値がデータベースにないものを抽出(日付すべて(days)-queryの日付(querysets)) →　データベースの再構築
-      for day in days:
-        some__data = querysets.filter(regist_date__date =  day )
-        if some__data is None:
-          querysets =querysets.create(
-            auth = request.user,
-            time = 0,
-            regist_date = day,
-          )
+      #datetimeの型にデータを変更
+      time =datetime.datetime.strptime(str_query, '%Y-%m')
+      #月の初日と次の最終日
+      month_first_day=datetime.date(time.year,time.month,1)
+      month_end_day = time.replace(day=calendar.monthrange(time.year,time.month)[1]).date()
+
+      day = month_first_day
+
+      days={}
+      while day <= month_end_day:
+        some__data = queryset.filter(regist_date__date =  day )
+
+        if not len(some__data):
+          days[f"{day}"] = {"date":day.day,"total":0}
         else:
-          querysets = some__data.aggregate(Sum('time'))
-      return render(request,'content/home-after-login.html',{'queryset':querysets})
+          days[f"{day}"] = {"date":day.day,"total":some__data.aggregate(Sum('time'))['time__sum']}
+
+        day +=  datetime.timedelta(days=1)
+
+      contents = {
+        'time':total_time['time__sum'], #合計
+        'week_time':weekly_time['time__sum'], #今週の合計
+        'today_time':daily_time['time__sum'], #今日の合計
+        'querysets':json.dumps(days),
+        'date':query,
+        }
+
+      return render(request,'content/home-after-login.html',contents)
     else:
       return redirect('studyapp:home')
+
   return render(request,'content/home-after-login.html')
 ###勉強時間(グラフ)###
+####勉強時間の出力終了########
+
+###勉強時間詳細(total)###
+def each_total_study_time(request):
+  #全体の合計時間
+  auth_studytime = StudyTime.objects.filter(auth = request.user)
+  total_study_time = auth_studytime.aggregate(Sum('time'))['time__sum']
+  print(total_study_time)
+
+  categorise =[]
+
+  for item in auth_studytime:
+    #分類
+    category = item.category
+    categorise.append(category)
+  categorise = list(set(categorise))
+
+
+  content=[]
+
+  i = 0
+  while i<len(categorise):
+    #合計
+    category_i = categorise[i]
+    each_itme = auth_studytime.filter(category =category_i)
+    each_total_study_time = each_itme.aggregate(Sum('time'))['time__sum']
+    print(each_total_study_time)
+    #データセット作成
+    data={
+      "category":category_i,
+      "time":each_total_study_time,
+    }
+    content.append(data.copy())
+
+    i += 1
+  print(content)
+
+##リスト型
+  time_lsit = []
+
+  for time in content:
+    print(time)
+    item = time["time"]
+    time_lsit.append(item)
+  print(time_lsit)
+
+  max_time = max(time_lsit)
+  print(max_time)
+
+  #width
+  width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
+  print(width)
+
+  #追加
+  j = 0
+  for key in content:
+    key['width']= width[j]
+    j += 1
+  print(content)
+
+  #並び替え
+  content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
+  print(content_sorted)
+
+  return render(request,'content/studylog_detail_total.html',{'items':content_sorted,'total':total_study_time})
+
+###勉強時間詳細(month)###
+def each_month_study_time(request):
+  #月の合計時間
+  today = datetime.date.today()
+  start_month =today.replace(day=1)
+  end_month =today.replace(day = calendar.monthrange(today.year,today.month)[1])
+
+  auth_studytime = StudyTime.objects.filter(auth = request.user)
+  studytime = auth_studytime.filter(regist_date__range = [start_month,end_month])
+  month_studytime = studytime.aggregate(Sum('time'))['time__sum']
+  print(month_studytime)
+
+  categorise =[]
+
+  for item in studytime:
+    #分類
+    category = item.category
+    categorise.append(category)
+  categorise = list(set(categorise))
+
+
+  content=[]
+
+  i = 0
+  while i<len(categorise):
+    #合計
+    category_i = categorise[i]
+    each_itme = studytime.filter(category =category_i)
+    each_month_study_time = each_itme.aggregate(Sum('time'))['time__sum']
+    print(each_month_study_time)
+    #データセット作成
+    data={
+      "category":category_i,
+      "time":each_month_study_time,
+    }
+    content.append(data.copy())
+
+    i += 1
+  print(content)
+
+##リスト型
+  time_lsit = []
+
+  for time in content:
+    print(time)
+    item = time["time"]
+    time_lsit.append(item)
+  print(time_lsit)
+
+  max_time = max(time_lsit)
+  print(max_time)
+
+  #width
+  width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
+  print(width)
+
+  #追加
+  j = 0
+  for key in content:
+    key['width']= width[j]
+    j += 1
+  print(content)
+
+  #並び替え
+  content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
+  print(content_sorted)
+
+  return render(request,'content/studylog_detail_month.html',{'items':content_sorted,'total':month_studytime})
+
+###勉強時間詳細(day)###
+def day_study_time(request):
+  #日の合計時間
+  today = datetime.date.today()
+
+  auth_studytime = StudyTime.objects.filter(auth = request.user)
+  studytime = auth_studytime.filter(regist_date__date = today)
+  today_studytime = studytime.aggregate(Sum('time'))['time__sum']
+  print(today_studytime)
+  if today_studytime is None:
+      today_study_time = 0
+      content_sorted=[{
+        "category":'記録なし',
+        "time":0,
+        "width":0,
+      }]
+      print(today_studytime)
+  else:
+
+    categorise =[]
+
+    for item in studytime:
+      #分類
+      category = item.category
+      categorise.append(category)
+    categorise = list(set(categorise))
+
+
+    content=[]
+
+    i = 0
+    while i<len(categorise):
+      #合計
+      category_i = categorise[i]
+      each_itme = studytime.filter(category =category_i)
+      today_study_time = each_itme.aggregate(Sum('time'))['time__sum']
+      print(today_study_time)
+      #データセット作成
+      data={
+        "category":category_i,
+        "time":today_study_time,
+      }
+      content.append(data.copy())
+
+      i += 1
+    print(content)
+
+  ##リスト型
+    time_lsit = []
+
+    for time in content:
+      print(time)
+      item = time["time"]
+      time_lsit.append(item)
+    print(time_lsit)
+    max_time = max(time_lsit)
+    print(max_time)
+
+    #width
+    width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
+    print(width)
+
+    #追加
+    j = 0
+    for key in content:
+      key['width']= width[j]
+      j += 1
+    print(content)
+
+    #並び替え
+    content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
+    print(content_sorted)
+
+  return render(request,'content/studylog_detail_month.html',{'items':content_sorted,'total':today_studytime})
 
 
 ####タイマーの時間記録########
@@ -260,10 +525,10 @@ def registform(request):
 ###登録サイトの出力###
 def registsite(request):
   some_object = Registsite.objects.filter(auth=request.user)
-  ordered_object = some_object.order_by('-regist_date')
+  pages = some_object.order_by('-regist_date')
   #ページネーション
-  paginator = Paginator(ordered_object,6)
-  page = request.Get.get('page',1)
+  paginator = Paginator(pages,6)
+  page = request.GET.get('page',1)
   try:
     pages =paginator.page(page)
   except PageNotAnInteger:
@@ -271,7 +536,7 @@ def registsite(request):
   except EmptyPage:
     pages = paginator.page(1)
 
-  return render(request,'content/RegistSite.html',{'contents':ordered_object, 'pages': pages})
+  return render(request,'content/RegistSite.html',{'pages': pages})
 
 
 
@@ -287,7 +552,15 @@ def registsite_delete(request,delete_id):
 def registsite_edit(request,edit_id):
   usersites = Registsite.objects.filter(auth=request.user)
   registsite =get_object_or_404(usersites,id=edit_id)
-  return render(request,'content/regist_site_edit.html',{'registsite':registsite})
+
+  if request.method == "POST":
+    registsite.title = request.POST["name"]
+    registsite.category = request.POST["category"]
+    registsite.url = request.POST["url"]
+    registsite.save()
+    return redirect('studyapp:registsite')
+  else:
+    return render(request,'content/regist_site_edit.html',{'registsite':registsite})
 
 #検索機能
 def registsite_search(request):

@@ -3,6 +3,7 @@
   <link rel="stylesheet" href="./../../static/css/search.css">
   <link rel="stylesheet" href="./../../static/css/base.css">
   <link rel="stylesheet" href="./../../static/css/registe-site.css">
+  <link rel="stylesheet" href="./../../static/css/pagenate.css">
 </head>
 
 <style>
@@ -20,7 +21,7 @@
 
   .registe-site-location{
     position: absolute;
-    top: 160px;
+    top: 100px;
     left: 284px;
     width: calc(100% - 284px);
   }
@@ -61,91 +62,118 @@
 
   /*登録サイト 初め*/
   .registe-site-style{
-  width: 700px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  width: 80%;
+  border: #FFF;
   margin:auto;
 }
 </style>
 
 {% extends 'content/base.html' %}
 
-<body>
-  {% block content %}
-  <!--学習ログタイトル，ボタン-->
-  <div class="register-name"><span>登録サイト</span></div>
-  <div class="button-addstudylog-location">
-    <a href="{% url 'studyapp:registform' %}" class="button-addstudylog">サイト登録＋</a>
-  </div>
-  <!--学習ログタイトル，ボタン　おわり-->
-  <!--検索欄-->
-  <form method="GET" action="{% url 'studyapp:registsite_search' %}" class="search_container">
-    <input type="text" size="25" name="search" value="{{request.GET.search}}" placeholder="検索" >
-    <input type="submit" value="&#xf002">
-  </form>
-  <!--検索欄終わり-->
-  <!--ユーザーの要録サイト-->
-  <div class="registe-site-location">
-    <div class="registe-site-style">
-      <table id="registe-site-table">
-        <tr>
-          <th>サイト名&url</th>
-          <th>ジャンル</th>
-          <th>削除/編集</th>
-        </tr>
-        {% for content in contents %}
-        <tr>
-          <td><a href="{{content.url}}" class="post_usersite_title">{{content.title}}</a></td>
-          <td>{{content.category}}</td>
-          <td>
-            <form action="{% url 'studyapp:delete_site' content.id %}" method="POST" class="delete_usrsite_form">
-              {% csrf_token %}
-              <button  class="delete_site_button" type="submit" onclick="return confirm('本当に削除しますか？');">
-                <i class="fa fa-trash-o" style="color:red;"></i>
-              </button>
-            </form>/
-            <button class="edit_site_button" type="submit" >
-              <a href="{% url 'studyapp:edit_site' content.id %}" style="color: black;">
-                <i class="fa fa-edit"></i>
-              </a>
+{% block content %}
+<!--学習ログタイトル，ボタン-->
+<div class="register-name"><span>登録サイト</span></div>
+<div class="button-addstudylog-location">
+  <a href="{% url 'studyapp:registform' %}" class="button-addstudylog">サイト登録＋</a>
+</div>
+<!--学習ログタイトル，ボタン　おわり-->
+<!--ユーザーの要録サイト-->
+<div class="registe-site-location">
+  <div class="registe-site-style">
+    <!--検索欄-->
+    <form method="GET" action="{% url 'studyapp:registsite_search' %}" class="search_container">
+      <input type="text" size="25" name="search" value="{{request.GET.search}}" placeholder="検索">
+      <input type="submit" value="&#xf002">
+    </form>
+    <!--検索欄終わり-->
+    <table id="registe-site-table">
+      <tr>
+        <th>サイト名&url</th>
+        <th>ジャンル</th>
+        <th>削除/編集</th>
+      </tr>
+      {% for page in pages %}
+      <tr>
+        <td><a href="{{page.url}}" class="post_usersite_title">{{page.title}}</a></td>
+        <td>{{page.category}}</td>
+        <td>
+          <form action="{% url 'studyapp:delete_site' page.id %}" method="POST" class="delete_usrsite_form">
+            {% csrf_token %}
+            <button  class="delete_site_button" type="submit" onclick="return confirm('本当に削除しますか？');">
+              <i class="fa fa-trash-o" style="color:red;"></i>
             </button>
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-  </div>
-  {% if pages.has_other_pages %}
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      ｛% if pages.has_previous %｝
-      <li><a class="page-link text-primary d-inline-block" href="?page=｛｛ pages.previous_page_number ｝｝{% if request.GET.page %}&page={{ request.GET.qpage}}{% endif %}"></a></li>
-      ｛% else %｝
-      <li class="disabled">
-        <div class="page-link text-secondary d-inline-block disabled" href="#"></div></div>
-      </li>
-      {% endif %}
-
-      {% for page_num in page.paginator.page_range %}
-        {% if page_num %}
-          {% if page_num == page.number %}
-          <li class="disabled">
-            <div class="page-link text-secondary d-inline-block disabled" href="#"></div>
-          </li>
+          </form>/
+          <button class="edit_site_button" type="submit" >
+            <a href="{% url 'studyapp:edit_site' page.id %}" style="color: black;">
+              <i class="fa fa-edit"></i>
+            </a>
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% if pages.has_other_pages %}
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          {% if pages.has_previous %}
+            <li>
+              <a class="page-link text-primary d-inline-block active"
+                href="?page={{pages.previous_page_number}}{% if request.GET.search %}&search={{ request.GET.search}}{% endif %}"
+                style="padding:0px; margin:0px">
+                <i class="fa fa-angle-double-left"></i>
+              </a>
+            </li>
           {% else %}
-          <li class="disabled">
-            <div class="page-link text-secondary d-inline-block disabled" href="?page={{ pages.page_num }}{% if request.GET.page %}&page={{ request.GET.page }}{% endif %}"></div>
-          </li>
+            <li class="disabled">
+              <i class="fa fa-angle-double-left"></i>
+            </li>
           {% endif %}
-        {% else %}
-          <li class="disabled"><a class="page-link text-secondary d-inline-block text-muted" href="#">・・・</a></li>
-        {% endif %｝
-      {% endfor %｝
-
-      {% if page.has_next %}
-        <li><div class="page-link text-secondary d-inline-block disabled" href="?page={{ pages.next_page_number }}{% if request.GET.page %}&page={{ request.GET.page }}{% endif %}"></div></li>
-      {% else %}
-        <li class="disabled"><a class="page-link text-secondary d-inline-block text-muted" href="#"></a></li>
-      {% endif %}
-    </ul>
-  {% endblock %}
-</body>
+          {% if pages.has_previous %}
+            {% if pages.previous_page_number != 1 %}
+              <li><a class="page-link text-primary d-inline-block"
+                  href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">1</a></li>
+              <li>…</li>
+            {% endif %}
+            <li class="disabled">
+              <a class="page-link text-secondary d-inline-block disabled"
+                href="?page={{ pages.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search}}{% endif %}">
+                {{pages.previous_page_number}}
+              </a>
+            </li>
+          {% endif %}
+          <li class="disabled">
+            <a class="page-link text-secondary d-inline-block disabled current" href="#">{{pages.number}}</a>
+          </li>
+          {% if pages.has_next %}
+            <li>
+              <a class="page-link text-secondary d-inline-block disabled"
+                href="?page={{ pages.next_page_number }}{% if request.GET.search %}&search={{request.GET.search}}{% endif %}">
+                {{pages.next_page_number }}
+              </a>
+            </li>
+            {% if pages.next_page_number != pages.paginator.num_pages%}
+              <li>…</li>
+              <li>
+                <a class="page-link text-primary d-inline-block" href="?page={{ pages.paginator.num_pages}}">
+                  {{pages.paginator.num_pages }}
+                </a>
+              </li>
+            {% endif %}
+          {% endif %}
+          {% if pages.has_next %}
+            <li class="disabled">
+              <a class="page-link text-secondary d-inline-block text-muted active" href="?page={{pages.next_page_number}}">
+                <i class="fa fa-angle-double-right"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="disabled">
+              <i class="fa fa-angle-double-right"></i>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

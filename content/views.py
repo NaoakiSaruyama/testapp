@@ -113,7 +113,7 @@ def studytime(request):
       category=request.POST['category'],
     )
     object.save()
-    return redirect('studyapp:home')
+    return redirect('studyapp:studylog')
   else:
     return render(request,'content/AddStudyLog.html')
 #####勉強時間の記録終了#########
@@ -121,7 +121,9 @@ def studytime(request):
 #####勉強時間の編集(検索前)#####
 def edit_studylog(request):
   objects = StudyTime.objects.filter(regist_date__date = datetime.date.today())
-  return render(request,'content/EditStudylog.html',{'objects':objects})
+  today = datetime.date.today()
+  print(today)
+  return render(request,'content/EditStudylog.html',{'objects':objects,'date':str(today)})
 
 ####勉強時間の編集(検索後)########
 def after_search_edit_studylog(requerst):
@@ -421,12 +423,12 @@ def day_study_time(request):
   #日の合計時間
   today = datetime.date.today()
 
-  auth_studytime = StudyTime.objects.filter(auth = request.user)
-  studytime = auth_studytime.filter(regist_date__date = today)
-  today_studytime = studytime.aggregate(Sum('time'))['time__sum']
+  auth_studytime = StudyTime.objects.filter(auth = request.user)#モデルからログインしているユーザーのデータを引っ張る
+  studytime = auth_studytime.filter(regist_date__date = today)#今日の日付のデータを抽出する
+  today_studytime = studytime.aggregate(Sum('time'))['time__sum']#今日の日付のデータの合計値を出す
   print(today_studytime)
   if today_studytime is None:
-      today_study_time = 0
+      today_studytime = 0
       content_sorted=[{
         "category":'記録なし',
         "time":0,

@@ -25,7 +25,7 @@
 	padding-left: 0px ;
 }
 
-#nav li {
+.nav1 li {
   text-align: center;
   background-color: #ff96a3;
 	border-color:#ff96a3 ;
@@ -35,16 +35,48 @@
 	border-left:#fff ;
 }
 
-#nav li a {
+.nav1 li a {
   text-decoration: none;
   color: #fff;
   font-weight: bold;
+  display: inline-block;
+}
+
+
+
+.nav2 li {
+  text-align: center;
+  background-color: #ff96a3;
+	border-color:#ff96a3 ;
+  float: left;
+	margin-left:0.1rem ;
+	padding: 0.5rem 1rem;
+	border-left:#fff ;
+}
+
+.nav2 li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  display: inline-block;
+}
+
+#nav ul li {
+	display: inline-block;
+}
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+#nav::after {
+	clear: both;
 }
 
 
 .registe-site-style {
   width: 80%;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 #registe-site-table th,#registe-site-table td {
@@ -103,17 +135,25 @@ a{
 }
 
 .btn-area{
-  position: absolute;
   text-align: center;
 }
 
-input[type="submit"]{
-	background: #ff96a3;
-	border: none;
-	color: #fff;
+.return{
+	display: inline-block;
+	background: #cbcccb;
 	font-size:15px;
 	font-weight:bold;
 	padding: 10px 20px;
-	margin: 1rem;
+	margin: 8px 0px;
 	border-radius: 10px;
+}
+
+.return_link{
+	text-decoration: none;
+	color: #fff;
+}
+
+.return_home{
+	background-color: rgba(0,0,0,0);
+	border: none;
 }

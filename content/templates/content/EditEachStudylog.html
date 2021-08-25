@@ -24,10 +24,9 @@
       </div>
       <div class="btn-area">
         <input type="submit" value="再登録">
-        <button class="return_home">
-          <a href="{% url 'studyapp:edit_studylog' %}"></a>
-          <input style="background-color: #cbcccb;" type="submit" value="戻る">
-        </button>
+        <div class="return">
+          <a class="return_link" href="{% url 'studyapp:edit_studylog' %}">戻る</a>
+        </div>
       </div>
     </form>'
   </div>

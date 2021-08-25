@@ -9,19 +9,25 @@
 <body>
   <!--ユーザーの要録サイト-->
   <div class="location">
-    <ul id="nav">
-      <li style="border-radius: 10px 0px 0px 10px;"><a href="{% url 'studyapp:studylog' %}">追加</a></li>
-      <li style="border-radius: 0px 10px 10px 0px;"><a href="{% url 'studyapp:edit_studylog'%}">編集</a></li>
-      <li style="background-color:#fff; padding-left: 40%; padding-right: 0%;">
-        <form class="search_regist_date" action="" method="GET">
-          <input id="select_date" class="select_date" type="date" name="search" value="{{ request.GET.search }}">
-          <button class="bargraph-date-submit" type="submit" style="background-color: rgba(0,0,0,0); border: none;">
-            <i class="fas fa-sync" style="color:#000;"></i>
-          </button>
-        </form>
-      </li>
-    </ul>
     <div class="registe-site-style">
+      <ul id="nav" style="display: block;">
+        <li class="left">
+          <ul class="nav1" style="padding-left: 0px;">
+            <li style="border-radius: 10px 0px 0px 10px;"><a href="{% url 'studyapp:studylog' %}">追加</a></li>
+            <li style="border-radius: 0px 10px 10px 0px;"><a href="{% url 'studyapp:edit_studylog'%}">編集</a></li>
+          </ul>
+        </li>
+        <li class="right">
+          <ul class="nav2" style="padding-left: 0px;">
+            <form class="search_regist_date" action="" method="GET">
+              <input id="select_date" class="select_date" type="date" name="search" value="{{ date }}">
+              <button class="bargraph-date-submit" type="submit" style="background-color: rgba(0,0,0,0); border: none;">
+                <i class="fas fa-sync" style="color:#000;"></i>
+              </button>
+            </form>
+          </ul>
+        </li>
+      </ul>
       <table id="registe-site-table">
         <tr>
           <th>分類</th>
@@ -49,19 +55,10 @@
         {% endfor %}
       </table>
       <div class="btn-area">
-        <button style="background-color: rgba(0,0,0,0); border: none;">
-          <a href="{% url 'studyapp:home' %}"></a>
-          <input style="background-color: #cbcccb;" type="submit" value="戻る">
-        </button>
+        <div class="return">
+          <a class="return_link" href="{% url 'studyapp:home' %}">戻る</a>
+        </div>
       </div>
     </div>
   </div>
-  <script>
-    var today = new Date();
-    today.setDate(today.getDate());
-    var yyyy = today.getFullYear();
-    var mm = ("0" + (today.getMonth() + 1)).slice(-2);
-    var dd = ("0"+ (today.getDay())).slice(-2);
-    document.getElementById("select_date").value = yyyy + '-' + mm + '-' + dd;
-  </script>
 </body>

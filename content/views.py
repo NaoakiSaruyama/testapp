@@ -292,60 +292,70 @@ def each_total_study_time(request):
   total_study_time = auth_studytime.aggregate(Sum('time'))['time__sum']
   print(total_study_time)
 
-  categorise =[]
+  if total_study_time is None:
+    total_study_time = 0
+    content_sorted=[{
+      "category":'記録なし',
+      "time":0,
+      "width":0,
+    }]
+    print(total_study_time)
 
-  for item in auth_studytime:
-    #分類
-    category = item.category
-    categorise.append(category)
-  categorise = list(set(categorise))
+  else:
+    categorise =[]
+
+    for item in auth_studytime:
+      #分類
+      category = item.category
+      categorise.append(category)
+    categorise = list(set(categorise))
 
 
-  content=[]
+    content=[]
 
-  i = 0
-  while i<len(categorise):
-    #合計
-    category_i = categorise[i]
-    each_itme = auth_studytime.filter(category =category_i)
-    each_total_study_time = each_itme.aggregate(Sum('time'))['time__sum']
-    print(each_total_study_time)
-    #データセット作成
-    data={
-      "category":category_i,
-      "time":each_total_study_time,
-    }
-    content.append(data.copy())
+    i = 0
+    while i<len(categorise):
+      #合計
+      category_i = categorise[i]
+      each_itme = auth_studytime.filter(category =category_i)
+      each_total_study_time = each_itme.aggregate(Sum('time'))['time__sum']
+      print(each_total_study_time)
+      #データセット作成
+      data={
+        "category":category_i,
+        "time":each_total_study_time,
+      }
+      content.append(data.copy())
 
-    i += 1
-  print(content)
+      i += 1
+    print(content)
 
-##リスト型
-  time_lsit = []
+  ##リスト型
+    time_lsit = []
 
-  for time in content:
-    print(time)
-    item = time["time"]
-    time_lsit.append(item)
-  print(time_lsit)
+    for time in content:
+      print(time)
+      item = time["time"]
+      time_lsit.append(item)
+    print(time_lsit)
 
-  max_time = max(time_lsit)
-  print(max_time)
+    max_time = max(time_lsit)
+    print(max_time)
 
-  #width
-  width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
-  print(width)
+    #width
+    width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
+    print(width)
 
-  #追加
-  j = 0
-  for key in content:
-    key['width']= width[j]
-    j += 1
-  print(content)
+    #追加
+    j = 0
+    for key in content:
+      key['width']= width[j]
+      j += 1
+    print(content)
 
-  #並び替え
-  content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
-  print(content_sorted)
+    #並び替え
+    content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
+    print(content_sorted)
 
   return render(request,'content/studylog_detail_total.html',{'items':content_sorted,'total':total_study_time})
 
@@ -360,61 +370,70 @@ def each_month_study_time(request):
   studytime = auth_studytime.filter(regist_date__range = [start_month,end_month])
   month_studytime = studytime.aggregate(Sum('time'))['time__sum']
   print(month_studytime)
+  if month_studytime is None:
+    month_studytime = 0
+    content_sorted=[{
+      "category":'記録なし',
+      "time":0,
+      "width":0,
+    }]
+    print(month_studytime)
 
-  categorise =[]
+  else:
+    categorise =[]
 
-  for item in studytime:
-    #分類
-    category = item.category
-    categorise.append(category)
-  categorise = list(set(categorise))
+    for item in studytime:
+      #分類
+      category = item.category
+      categorise.append(category)
+    categorise = list(set(categorise))
 
 
-  content=[]
+    content=[]
 
-  i = 0
-  while i<len(categorise):
-    #合計
-    category_i = categorise[i]
-    each_itme = studytime.filter(category =category_i)
-    each_month_study_time = each_itme.aggregate(Sum('time'))['time__sum']
-    print(each_month_study_time)
-    #データセット作成
-    data={
-      "category":category_i,
-      "time":each_month_study_time,
-    }
-    content.append(data.copy())
+    i = 0
+    while i<len(categorise):
+      #合計
+      category_i = categorise[i]
+      each_itme = studytime.filter(category =category_i)
+      each_month_study_time = each_itme.aggregate(Sum('time'))['time__sum']
+      print(each_month_study_time)
+      #データセット作成
+      data={
+        "category":category_i,
+        "time":each_month_study_time,
+      }
+      content.append(data.copy())
 
-    i += 1
-  print(content)
+      i += 1
+    print(content)
 
-##リスト型
-  time_lsit = []
+  ##リスト型
+    time_lsit = []
 
-  for time in content:
-    print(time)
-    item = time["time"]
-    time_lsit.append(item)
-  print(time_lsit)
+    for time in content:
+      print(time)
+      item = time["time"]
+      time_lsit.append(item)
+    print(time_lsit)
 
-  max_time = max(time_lsit)
-  print(max_time)
+    max_time = max(time_lsit)
+    print(max_time)
 
-  #width
-  width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
-  print(width)
+    #width
+    width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
+    print(width)
 
-  #追加
-  j = 0
-  for key in content:
-    key['width']= width[j]
-    j += 1
-  print(content)
+    #追加
+    j = 0
+    for key in content:
+      key['width']= width[j]
+      j += 1
+    print(content)
 
-  #並び替え
-  content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
-  print(content_sorted)
+    #並び替え
+    content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
+    print(content_sorted)
 
   return render(request,'content/studylog_detail_month.html',{'items':content_sorted,'total':month_studytime})
 

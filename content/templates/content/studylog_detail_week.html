@@ -3,9 +3,9 @@
   <script src="https://kit.fontawesome.com/330fa5bd85.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css"
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-  <link rel="stylesheet" href="./../../static/css/base.css">
-  <link rel="stylesheet" href="./../../static/css/compare_graph.css">
-  <link rel="stylesheet" href="./../../static/css/tab.css">
+  <link rel="stylesheet" href="./../../../static/css/base.css">
+  <link rel="stylesheet" href="./../../../static/css/compare_graph.css">
+  <link rel="stylesheet" href="./../../../static/css/tab.css">
   <style>
     .studylog-name {
       position: absolute;
@@ -87,25 +87,25 @@
       <li class="left">
         <ul class="nav1" style="padding-left: 0px;">
           <li style="border-radius:10px 0px 0px 10px; "><a href="{% url 'studyapp:home' %}">全体</a></li>
-          <li style="border-radius:0px 10px 10px 0px;"><a href="#">詳細</a></li>
+          <li style="border-radius:0px 10px 10px 0px;"><a href="{% url 'studyapp:detail_total'%}">詳細</a></li>
         </ul>
       </li>
       <li class="right">
         <ul class="nav2">
-          <li style="border-radius:10px 0px 0px 10px;"><a href="#">合計</a></li>
-          <li><a href="#">年</a></li>
-          <li><a href="#">月</a></li>
-          <li style="border-radius:0px 10px 10px 0px;"><a href="#">日</a></li>
+          <li style="border-radius:10px 0px 0px 10px;"><a href="{% url 'studyapp:detail_total' %}">合計</a></li>
+          <li><a href="{% url 'studyapp:detail_month' %}">月</a></li>
+          <li><a href="{% url 'studyapp:detail_week'%}">週</a></li>
+          <li style="border-radius:0px 10px 10px 0px;"><a href="{% url 'studyapp:detail_day' %}">日</a></li>
         </ul>
       </li>
     </ul>
     <!--切り替えボタン終了-->
     <div class="ub-bar-graph__location">
       <div class="ub-bar-graph">
-        <form  action="">
-          <input class="ub-bar-graph__date" type="week">
-          <button class="bargraph-date-submit" type="submit">
-            <i class="fas fa-sync" style="color: #FFF;"></i>
+        <form action="{% url 'studyapp:detail_week_search' %}" method="GET">
+          <input class="ub-bar-graph__date" type="week" style="font-weight: bold;" value="{{ date }}" name="search">
+          <button class="bargraph-date-submit" type="submit" style="background-color: rgba(0,0,0,0); border: none;">
+            <i class="fas fa-sync"></i>
           </button>
         </form>
         <p class="ub-bar-graph__title">合計時間</p>

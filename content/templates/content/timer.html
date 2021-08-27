@@ -75,6 +75,7 @@
       function startTimer() {
         if (stoptime == true) {
           stoptime = false;
+          localStorage.setItem('stoptime', false);
           timerCycle();
 
           localStorage.setItem('startDate',new Date())
@@ -83,27 +84,44 @@
       function stopTimer() {
         if (stoptime == false) {
           stoptime = true;
+          localStorage.setItem('stoptime', true);
 
-          localStorage.removeItem('startDate')
+          var timerCount = parseInt(hr) * 3600 + parseInt(min) * 60 + parseInt(sec);
+          localStorage.setItem('timerCount', timerCount);
             }
       }
-　　　//ローカルストレージ読み込み
-      var startDate = localStorage.getItem('startDate');
-      var diffSec = 0
-
-      if(startDate !=null ){
-        stoptime =false
-        setTimeout("timerCycle()",1000)
-
-        var startDate = new Date(startDate)
-        var nowDate = new Date();
-
-        diffSec = parseInt((nowDate-startDate)/1000);
+　　　//タイマー起動状態取得
+      stoptime = localStorage.getItem('stoptime');
+      if (stoptime == null || stoptime == 0) {
+      //未設定ならデフォルトtrue設定
+      stoptime = true;
+      } else {
+        stoptime = JSON.parse(stoptime.toLowerCase());
       }
 
-      var num_hr = diffSec / 3600 | 0;
-      var num_min = diffSec % 3600 / 60 | 0;
-      var num_sec = diffSec % 60;
+      //保存中のタイマー時間取得
+        var timerCount = parseInt(localStorage.getItem('timerCount')) | 0;
+
+        if (stoptime == false) {
+
+          //start押した時の時刻を取得
+          var startDate = localStorage.getItem('startDate');
+          //start押した時の時刻をDate型に変換
+          var startDate = new Date(startDate);
+
+          //現在時刻を取得
+          var nowDate = new Date();
+
+          //保存中のタイマー時間 ＋ start押してから経過した時間
+          timerCount += parseInt((nowDate - startDate) / 1000);
+
+          //タイマー起動
+          setTimeout("timerCycle()", 1000);
+        }
+
+      var num_hr = timerCount  / 3600 | 0;
+      var num_min = timerCount  % 3600 / 60 | 0;
+      var num_sec = timerCount  % 60;
 
       if (num_hr < 10 || num_hr == 0) {
           hr = '0' + parseInt(num_hr)
@@ -149,10 +167,6 @@
           if (hr < 10 || hr == 0) {
             hr = '0' + hr;
           }
-          //ローカルストレージに保存
-          localStorage.setItem('hr',hr)
-          localStorage.setItem('min',min)
-          localStorage.setItem('sec',sec)
 
           timer.innerHTML = hr + ':' + min + ':' + sec;
 
@@ -161,12 +175,13 @@
       }
 
       function resetTimer() {
-        localStorage.removeItem('startDate')
         timer.innerHTML = '00:00:00';
         stoptime = true;
+        localStorage.setItem('stoptime', true);
         hr = 0;
         sec = 0;
         min = 0;
+        localStorage.removeItem('timerCount');
       }
       function registTimer(){
         document.getElementById('time').value = parseInt(60 * hr + min )
@@ -179,12 +194,13 @@
           var dd = ("0" + today.getDate()).slice(-2);
           document.getElementById("today").value = yyyy + '-' + mm + '-' + dd;
         })
-        localStorage.removeItem('startDate')
         timer.innerHTML = '00:00:00';
         stoptime = true;
+        localStorage.setItem('stoptime', true);
         hr = 0;
         sec = 0;
         min = 0;
+        localStorage.removeItem('timerCount');
       }
   </script>
   {% endblock %}

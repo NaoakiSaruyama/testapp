@@ -1,5 +1,5 @@
 <div>
-  <link rel="stylesheet" href="./../../static/css/regist-site-form.css">
+  <link rel="stylesheet" href="./../../../static/css/regist-site-form.css">
 </div>
 
 <body>
@@ -12,7 +12,7 @@
       {% csrf_token%}
       <div class="inputs">
         <label class="label">日付</label>
-        <input id="today" class="input_form" type="date" name="date" required="required" value="{{studylog.regist_date}}">
+        <input id="today" class="input_form" type="date" name="date" required="required" value="{{regist_date}}">
       </div>
       <div class="inputs">
         <label class="label">分類</label>

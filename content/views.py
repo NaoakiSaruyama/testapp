@@ -132,7 +132,7 @@ def after_search_edit_studylog(requerst):
     query = requerst.GET['search']
     if query:
       queryset =  queryset.filter(regist_date__date = query)
-    return render(requerst,'content/EditStudylog.html',{'objects':queryset})
+    return render(requerst,'content/EditStudylog_after_search.html',{'objects':queryset,'date':query})
   else:
     return redirect('studyapp:edit_studylog')
 
@@ -149,7 +149,16 @@ def delete_studylog(request,delete_studylog_id):
 def edit_each_studylog(request,edit_each_studylog_id):
   studylog = StudyTime.objects.filter(auth = request.user)
   edit_studylog = get_object_or_404(studylog,id = edit_each_studylog_id)
-  return render(request,'content/EditEachStudylog',{'studylog':edit_studylog})
+  regist_date = edit_studylog.regist_date
+  date = regist_date.strftime('%Y-%m-%d')
+
+  if request.method == "POST":
+    edit_studylog.regist_date =request.POST["date"]
+    edit_studylog.category = request.POST["category"]
+    edit_studylog.time = request.POST["time"]
+    edit_studylog.save()
+    return redirect('studyapp:edit_studylog')
+  return render(request,'content/EditEachStudylog.html',{'studylog':edit_studylog,'regist_date':date})
 
 #####勉強時間の出力###########
 @login_required
@@ -366,12 +375,16 @@ def each_month_study_time(request):
   start_month =today.replace(day=1)
   end_month =today.replace(day = calendar.monthrange(today.year,today.month)[1])
 
+  date_ym = today.strftime('%Y-%m')
+  print(date_ym)
+
   auth_studytime = StudyTime.objects.filter(auth = request.user)
   studytime = auth_studytime.filter(regist_date__range = [start_month,end_month])
   month_studytime = studytime.aggregate(Sum('time'))['time__sum']
   print(month_studytime)
   if month_studytime is None:
     month_studytime = 0
+    total_width = 0
     content_sorted=[{
       "category":'記録なし',
       "time":0,
@@ -380,6 +393,7 @@ def each_month_study_time(request):
     print(month_studytime)
 
   else:
+    total_width = 100
     categorise =[]
 
     for item in studytime:
@@ -435,7 +449,247 @@ def each_month_study_time(request):
     content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
     print(content_sorted)
 
-  return render(request,'content/studylog_detail_month.html',{'items':content_sorted,'total':month_studytime})
+  return render(request,'content/studylog_detail_month.html',{'items':content_sorted,'total':month_studytime,'date':date_ym,'total_width':total_width})
+
+###勉強時間詳細(month検索機能)###
+def each_month_study_time_search(request):
+  if request.method == "GET":
+    #指定付きの合計時間取得
+    time = request.GET['search']
+    date_ym =datetime.datetime.strptime(str(time) ,'%Y-%m')
+    start_month =datetime.date(date_ym.year,date_ym.month,1)
+    end_month =date_ym.replace(day = calendar.monthrange(date_ym.year,date_ym.month)[1])
+
+    auth_studytime = StudyTime.objects.filter(auth = request.user)
+    studytime = auth_studytime.filter(regist_date__range = [start_month,end_month])
+    month_studytime = studytime.aggregate(Sum('time'))['time__sum']
+    print(month_studytime)
+    if month_studytime is None:
+      month_studytime = 0
+      total_width = 0
+      content_sorted=[{
+        "category":'記録なし',
+        "time":0,
+        "width":0,
+      }]
+      print(month_studytime)
+
+    else:
+      total_width = 100
+      categorise =[]
+
+      for item in studytime:
+        #分類
+        category = item.category
+        categorise.append(category)
+      categorise = list(set(categorise))
+
+
+      content=[]
+
+      i = 0
+      while i<len(categorise):
+        #合計
+        category_i = categorise[i]
+        each_itme = studytime.filter(category =category_i)
+        each_month_study_time = each_itme.aggregate(Sum('time'))['time__sum']
+        print(each_month_study_time)
+        #データセット作成
+        data={
+          "category":category_i,
+          "time":each_month_study_time,
+        }
+        content.append(data.copy())
+
+        i += 1
+      print(content)
+
+    ##リスト型
+      time_lsit = []
+
+      for time in content:
+        print(time)
+        item = time["time"]
+        time_lsit.append(item)
+      print(time_lsit)
+
+      max_time = max(time_lsit)
+      print(max_time)
+
+      #width
+      width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
+      print(width)
+
+      #追加
+      j = 0
+      for key in content:
+        key['width']= width[j]
+        j += 1
+      print(content)
+
+      #並び替え
+      content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
+      print(content_sorted)
+
+  return render(request,'content/studylog_detail_month.html',{'items':content_sorted,'total':month_studytime,'date':time,'total_width':total_width})
+
+
+###勉強時間詳細(week)###
+def each_week_study_time(request):
+  #週の合計時間
+  today = datetime.date.today()
+  week_monday = today - datetime.timedelta(days=today.isoweekday() + 1)
+  week_sunday = week_monday+datetime.timedelta(days=6)
+
+  week = today.strftime("%Y-W%W")
+  print(week)
+
+  auth_studytime = StudyTime.objects.filter(auth = request.user)
+  studytime = auth_studytime.filter(regist_date__range = [week_monday,week_sunday])
+  week_studytime = studytime.aggregate(Sum('time'))['time__sum']
+  print(week_studytime)
+  if week_studytime is None:
+    week_studytime = 0
+    total_width = 0
+    content_sorted=[{
+      "category":'記録なし',
+      "time":0,
+      "width":0,
+    }]
+
+  else:
+    total_width = 100
+    categorise =[]
+
+    for item in studytime:
+      #分類
+      category = item.category
+      categorise.append(category)
+    categorise = list(set(categorise))
+
+
+    content=[]
+
+    i = 0
+    while i<len(categorise):
+      #合計
+      category_i = categorise[i]
+      each_itme = studytime.filter(category =category_i)
+      each_month_study_time = each_itme.aggregate(Sum('time'))['time__sum']
+      print(each_month_study_time)
+      #データセット作成
+      data={
+        "category":category_i,
+        "time":each_month_study_time,
+      }
+      content.append(data.copy())
+
+      i += 1
+    print(content)
+
+  ##リスト型
+    time_lsit = []
+
+    for time in content:
+      print(time)
+      item = time["time"]
+      time_lsit.append(item)
+    print(time_lsit)
+
+    max_time = max(time_lsit)
+    print(max_time)
+
+    #width
+    width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
+    #追加
+    j = 0
+    for key in content:
+      key['width']= width[j]
+      j += 1
+
+    #並び替え
+    content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
+    print(content_sorted)
+
+  return render(request,'content/studylog_detail_week.html',{'items':content_sorted,'total':week_studytime,'date':week,'total_width':total_width})
+
+###勉強時間詳細(week検索)###
+def each_week_study_time_search(request):
+  #週の合計時間
+  chosed_week = request.GET["search"]
+  week_monday = datetime.datetime.strptime(chosed_week + '-1', "%Y-W%W-%w")
+  week_sunday = week_monday+datetime.timedelta(days=6)
+  print(week_monday)
+  print(week_sunday)
+
+  auth_studytime = StudyTime.objects.filter(auth = request.user)
+  studytime = auth_studytime.filter(regist_date__range = [week_monday,week_sunday])
+  week_studytime = studytime.aggregate(Sum('time'))['time__sum']
+  print(week_studytime)
+  if week_studytime is None:
+    week_studytime = 0
+    total_width = 0
+    content_sorted=[{
+      "category":'記録なし',
+      "time":0,
+      "width":0,
+    }]
+
+  else:
+    total_width = 100
+    categorise =[]
+
+    for item in studytime:
+      #分類
+      category = item.category
+      categorise.append(category)
+    categorise = list(set(categorise))
+
+
+    content=[]
+
+    i = 0
+    while i<len(categorise):
+      #合計
+      category_i = categorise[i]
+      each_itme = studytime.filter(category =category_i)
+      each_month_study_time = each_itme.aggregate(Sum('time'))['time__sum']
+      print(each_month_study_time)
+      #データセット作成
+      data={
+        "category":category_i,
+        "time":each_month_study_time,
+      }
+      content.append(data.copy())
+
+      i += 1
+    print(content)
+
+  ##リスト型
+    time_lsit = []
+
+    for time in content:
+      print(time)
+      item = time["time"]
+      time_lsit.append(item)
+    print(time_lsit)
+
+    max_time = max(time_lsit)
+    print(max_time)
+
+    #width
+    width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
+    #追加
+    j = 0
+    for key in content:
+      key['width']= width[j]
+      j += 1
+
+    #並び替え
+    content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
+    print(content_sorted)
+
+  return render(request,'content/studylog_detail_week.html',{'items':content_sorted,'total':week_studytime,'date':chosed_week,'total_width':total_width})
 
 ###勉強時間詳細(day)###
 def day_study_time(request):
@@ -445,16 +699,16 @@ def day_study_time(request):
   auth_studytime = StudyTime.objects.filter(auth = request.user)#モデルからログインしているユーザーのデータを引っ張る
   studytime = auth_studytime.filter(regist_date__date = today)#今日の日付のデータを抽出する
   today_studytime = studytime.aggregate(Sum('time'))['time__sum']#今日の日付のデータの合計値を出す
-  print(today_studytime)
   if today_studytime is None:
       today_studytime = 0
+      total_width = 0
       content_sorted=[{
         "category":'記録なし',
         "time":0,
         "width":0,
       }]
-      print(today_studytime)
   else:
+    total_width = 100
 
     categorise =[]
 
@@ -482,7 +736,6 @@ def day_study_time(request):
       content.append(data.copy())
 
       i += 1
-    print(content)
 
   ##リスト型
     time_lsit = []
@@ -491,9 +744,7 @@ def day_study_time(request):
       print(time)
       item = time["time"]
       time_lsit.append(item)
-    print(time_lsit)
     max_time = max(time_lsit)
-    print(max_time)
 
     #width
     width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
@@ -504,13 +755,87 @@ def day_study_time(request):
     for key in content:
       key['width']= width[j]
       j += 1
-    print(content)
 
     #並び替え
     content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
-    print(content_sorted)
 
-  return render(request,'content/studylog_detail_month.html',{'items':content_sorted,'total':today_studytime})
+  return render(request,'content/studylog_detail_day.html',{'items':content_sorted,'total':today_studytime,'date':str(today),'total_width':total_width})
+
+###勉強時間詳細(day検索機能)###
+def day_study_time_search(request):
+  if request.method == "GET":
+    today = request.GET['search']
+
+    auth_studytime = StudyTime.objects.filter(auth = request.user)#モデルからログインしているユーザーのデータを引っ張る
+    studytime = auth_studytime.filter(regist_date__date = today)#今日の日付のデータを抽出する
+    today_studytime = studytime.aggregate(Sum('time'))['time__sum']#今日の日付のデータの合計値を出す
+    if today_studytime is None:
+        today_studytime = 0
+        total_width = 0
+        content_sorted=[{
+          "category":'記録なし',
+          "time":0,
+          "width":0,
+        }]
+        print(today_studytime)
+    else:
+      total_width = 100
+
+      categorise =[]
+
+      for item in studytime:
+        #分類
+        category = item.category
+        categorise.append(category)
+      categorise = list(set(categorise))
+
+
+      content=[]
+
+      i = 0
+      while i<len(categorise):
+        #合計
+        category_i = categorise[i]
+        each_itme = studytime.filter(category =category_i)
+        today_study_time = each_itme.aggregate(Sum('time'))['time__sum']
+        print(today_study_time)
+        #データセット作成
+        data={
+          "category":category_i,
+          "time":today_study_time,
+        }
+        content.append(data.copy())
+
+        i += 1
+      print(content)
+
+    ##リスト型
+      time_lsit = []
+
+      for time in content:
+        print(time)
+        item = time["time"]
+        time_lsit.append(item)
+      print(time_lsit)
+      max_time = max(time_lsit)
+      print(max_time)
+
+      #width
+      width = list(map(lambda x:math.floor(x/max_time*100*10**3)/10**3,time_lsit))
+      print(width)
+
+      #追加
+      j = 0
+      for key in content:
+        key['width']= width[j]
+        j += 1
+      print(content)
+
+      #並び替え
+      content_sorted = sorted(content,key=lambda x:x['width'], reverse=True)
+      print(content_sorted)
+
+  return render(request,'content/studylog_detail_day.html',{'items':content_sorted,'total':today_studytime,'date':today,'total_width':total_width})
 
 
 ####タイマーの時間記録########

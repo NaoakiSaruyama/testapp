@@ -72,11 +72,9 @@
 
 {% block content %}
 <!--学習ログタイトル，ボタン-->
-<div class="studylogs-location">
-  <div class="studylog-name"><span>学習ログ</span></div>
-  <div class="button-addstudylog-location">
-    <a href="{%url 'studyapp:studylog' %}" class="button-addstudylog">学習ログ追加＋</a>
-  </div>
+<div class="studylog-name"><span>学習ログ</span></div>
+<div class="button-addstudylog-location">
+  <a href="{%url 'studyapp:studylog' %}" class="button-addstudylog">学習ログ追加＋</a>
 </div>
 <!--学習ログタイトル，ボタン　おわり-->
 <!--棒グラフ1-->
@@ -147,7 +145,7 @@
     var status = ["total"];
 
     var colors = ["total", "#50E3C2"];
-
+    //グラフ内部の大きさ
     var margin = { top: 30, right: 30, bottom: 40, left: 60 },
       width = 860 - margin.left - margin.right,
       height = 290 - margin.top - margin.bottom;

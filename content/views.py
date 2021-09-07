@@ -918,7 +918,16 @@ def registsite_search(request):
       queryset = queryset.filter(
         Q(title__icontains = query)|Q(category__icontains = query)
     )
-    return render(request,'content/RegistSite.html',{'contents':queryset})
+    #ページネーション
+    paginator = Paginator(queryset,6)
+    page = request.GET.get('page',1)
+    try:
+      pages =paginator.page(page)
+    except PageNotAnInteger:
+      pages = paginator.page(1)
+    except EmptyPage:
+      pages = paginator.page(1)
+    return render(request,'content/RegistSite.html',{'pages':pages})
   else:
     return render(request,'content/RegistSite.html')
 #####登録フォーム#######

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-kp=%@5$8-$etfv3*e)phs-^mr4$*@m1*#ya54*k0374y&%k3(4
 # DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['ec2-52-71-161-140.compute-1.amazonaws.com']
+ALLOWED_HOSTS = ['study-time-record.app.heroku.com']
 
 
 # Application definition

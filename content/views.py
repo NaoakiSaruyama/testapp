@@ -43,13 +43,19 @@ def Logout(request):
 #####アカウント作成##########
 def create_user(request):
   if request.method == 'POST':
-    object = Userdata.objects.create(
-      email = request.POST['email'],
-      name = request.POST['username'],
-      password = request.POST['password'],
-    )
-    object.save()
-    return redirect('studyapp:home')
+    post_email = request.POST['email']
+    post_name = request.POST['username']
+    try:
+      Userdata.objects.filter(email = post_email)
+      return render(request,"content/RegistUser.html",{"error":"このメールアドレスは登録されています"})
+    except:
+      object = Userdata.objects.create(
+        email = post_email,
+        name=post_name,
+        password = request.POST['password'],
+      )
+      object.save()
+      return redirect('studyapp:home')
   else:
     return render(request, 'content/RegistUser.html')
 #######アカウント作成終了########

@@ -12,6 +12,11 @@
       </div>
       <div class="form-item">
         <input type="email" name="email" required="required" placeholder="Email"></input>
+        <div style="color: red;">
+          {% if error %}
+          {{ error }}
+          {% endif %}
+        </div>
       </div>
       <div class="form-item">
         <input type="password" name="password" required="required" placeholder="パスワード"></input>

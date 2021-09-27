@@ -23,10 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kp=%@5$8-$etfv3*e)phs-^mr4$*@m1*#ya54*k0374y&%k3(4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+#DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['study-time-record.app.heroku.com']
+if DEBUG:
+    ALLOWED_HOSTS = ["127.0.0.1"]
+else:
+    ALLOWED_HOSTS = ["studytime-record-app.herokuapp.com"]
 
 
 # Application definition
@@ -126,13 +129,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-#import os
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#STATIC_URL = '/static/'
 
-#STATICFILES_DIRS = (
-#    os.path.join(BASE_DIR, 'static'),
-#)
+import os
+if DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_URL = '/static/'
+
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+    )
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -152,10 +158,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-ALLOWED_HOSTS = ["studytime-record-app.herokuapp.com"]
-
-DEBUG = False
 
 try:
     from config.local_settings import *

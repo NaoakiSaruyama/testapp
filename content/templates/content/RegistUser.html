@@ -9,12 +9,15 @@
       {% csrf_token%}
       <div class="form-item">
         <input name="username" required="required" placeholder="ユーザー名"></input>
+        {% if error_name %}
+        {{ error_name }}
+        {% endif %}
       </div>
       <div class="form-item">
         <input type="email" name="email" required="required" placeholder="Email"></input>
         <div style="color: red;">
-          {% if error %}
-          {{ error }}
+          {% if error_email %}
+          {{ error_email }}
           {% endif %}
         </div>
       </div>

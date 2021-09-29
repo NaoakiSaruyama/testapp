@@ -45,13 +45,14 @@ def create_user(request):
   if request.method == 'POST':
     post_email = request.POST['email']
     post_name = request.POST['username']
-    try:
-      Userdata.objects.filter(email = post_email)
-      return render(request,"content/RegistUser.html",{"error":"このメールアドレスは登録されています"})
-    except:
+    if Userdata.objects.filter(email=post_email):
+      return render(request,"content/RegistUser.html",{"error_email":"このメールアドレスは登録されています"})
+    elif Userdata.objects.filter(name=post_name):
+      return render(request,"content/RegistUser.html",{"error_name":"このユーザー名は登録されています"})
+    else:
       object = Userdata.objects.create(
         email = post_email,
-        name=post_name,
+        name = post_name,
         password = request.POST['password'],
       )
       object.save()
@@ -876,7 +877,7 @@ def registform(request):
 
 ###登録サイトの出力###
 def registsite(request):
-  some_object = Registsite.objects.filter(auth=request.user)
+  some_object = Registsite.objects.filter(auth = request.user)
   pages = some_object.order_by('-regist_date')
   #ページネーション
   paginator = Paginator(pages,6)

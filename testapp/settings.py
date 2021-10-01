@@ -10,6 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import environ
+
+env = environ.Env()
+env.read_env('.env')
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-kp=%@5$8-$etfv3*e)phs-^mr4$*@m1*#ya54*k0374y&%k3(4'
+#SECRET_KEY = 'django-insecure-kp=%@5$8-$etfv3*e)phs-^mr4$*@m1*#ya54*k0374y&%k3(4'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
@@ -79,20 +85,22 @@ WSGI_APPLICATION = 'testapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'd9fmah35i712dg',
+#        'USER': 'zmwimhtituiccp',
+#        'PASSWORD': '30b891487f5f4b3147db9dec247381dcfd68f586df82b4e88c3c30c56c6d6a24',
+#        'HOST': 'ec2-52-71-161-140.compute-1.amazonaws.com',
+#        'PORT': '5432',
+#    }
+#}
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd9fmah35i712dg',
-        'USER': 'zmwimhtituiccp',
-        'PASSWORD': '30b891487f5f4b3147db9dec247381dcfd68f586df82b4e88c3c30c56c6d6a24',
-        'HOST': 'ec2-52-71-161-140.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
+    'default': env.db,
 }
 
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'].update(db_from_env)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
